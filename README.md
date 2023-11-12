@@ -1,5 +1,8 @@
-C++ guidelines and good practices by Jan Wilmans (c) 2023
-These guidelines are free to use by anyone, if you find them useful, please send me a (kofi)[https://ko-fi.com/janwilmans]
+C++ guidelines and good practices by Jan Wilmans (c) 2023.
+These guidelines are free to use by anyone, if you find them useful, please send me a [Ko-fi](https://ko-fi.com/janwilmans).
+
+Most of the guidelines I give here are considered 'Modern C++ guidelines' at the time of it's writing (2023). However most of them are and were applicable regardless of whether you use C++11, C++23 or anything in between.
+The guidelines are mostly in line with Jason Turners's teachings on [C++ Weekly](https://www.youtube.com/@cppweekly). 
 
 # guidelines
 
