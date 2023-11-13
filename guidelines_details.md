@@ -74,6 +74,12 @@
 -   Move `static_assert` out of headers, so they are checked only once.
 -   Empty lines between data members is a code smell (rationale: if you wanted to group the data, you should add a struct)
 -   Do not return reference types, such as `std::string_view` from a function.
+-   Use `std::string_view` for arguments to function that do not care about zero-termination of the passed string
+-   Use `const std::string&` for arguments to function that DO care about zero-termination
+-   Use `std::string` and pass strings by value on constructor arguments that sink (move-construct a member variable) their value 
+    - rationale: this allow the caller choose to move into the argument, or make only one copy.
+-   Use `const std::filesystem::path& path` for strings that refer to file-like objects, such as devices or files.
+    - rationale: filesystem::path expresses intent, .c_str() gives zero-termination and `path` comes with handy functions.
 
 ## Discussion
 
@@ -90,15 +96,46 @@ These discussion points lack proper guidance, if you have suggestions, please cr
 
 ## Examples
 
-```
-class Person
+What does code that applies there guidelines look like?
+
+```cpp
+#include <string>
+
+// applies: explicit, sink, nodiscard, const
+class Example
 {
 public:
-    [[nodiscard]] std::string get_name() const;
-    void set_name(std::string);
+    explicit Example(std::string name) : m_name(std::move(name))
+    {
+    }
+
+    [[nodiscard]] std::string get_name() const
+    {
+        return m_name;
+    }
+
+    void set_name(std::string name)
+    {
+        m_name = std::move(name);
+    }
+
 private:
-    int m_name;
+    std::string m_name;
 };
+
+#include <filesystem>
+#include <optional>
+
+#include <sys/stat.h>
+
+// zero-termination, filesystem::path
+std::optional<int> get_filesize(const std::filesystem::path& path)
+{
+    struct stat64 meta_data = {};
+    if (0 == stat64(path.c_str(), &meta_data))  //  stat64 requires zero-termination
+    {
+        return meta_data.st_size;
+    }
+    return {}; // return no value if the size could not be read
+}
 ```
-
-
