@@ -8,7 +8,7 @@ These guidelines are free to use by anyone, if you find them useful, please send
 Most of the guidelines I describe here are generally considered 'Modern C++ guidelines' at the time of it's writing (2023). However many of them are and were applicable regardless of whether you use C++11, C++23 or anything in between.
 The guidelines are also mostly in line with Jason Turners's teachings on [C++ Weekly](https://www.youtube.com/@cppweekly). 
 
-The way I deviate from other sources is usually in simplification, that is, I try to give guidance even is the answer really is "is depends". My reasoning is, yes, it depends, but a go-to default is still valuable.
+The way I deviate from other sources is usually in simplification, that is, I try to give guidance even where the answer really is "it depends". My reasoning is, yes, it depends, but a go-to default is still valuable. Because the more we choose the defaults, the least surprising the code.
 
 # guidelines
 
