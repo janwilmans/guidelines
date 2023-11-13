@@ -14,11 +14,12 @@ The way I deviate from other sources is usually in simplification, that is, I tr
 
 The guidelines are well, guidelines. This means nothing is set in stone. 
 
-To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg) 
+To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg). "I kinda like having a fence, because it keeps me from falling into the river accidentaly. It doesn't stop you from going in, if you want to go into the river, go into the river.". I think this is a good way to think about these guidelines, use them as a default and if go beyond them, treat carefully.
 
-This being say, I found that the guidelines described here are reasonble default practices.
-The motto I recommend is: `comply or explain`. This means you should be able to explain in a review why you diviated from the default practice.
-This might sound more harsh then it has to; I do not mean you should use the guidelines to say 'do as I say or else'. 
+This does not mean you can "not think" and blindy follow the guidelines, it means, you think about the code, apply the defaults and if that looks like it is good enough, then do not make it more complicated, because following the guidelines will make for the 'least surprising code'.
+
+I found that the guidelines described here are reasonble default practices.
+The motto I recommend is: `comply or explain`. This means if you chose a non-default solution, and divided from a guidelines, you should be able to explain in a review why. Also if might indicate, this is a particularly interesting piece of code so, maybe it deserves a comment to explain this. This might sound more harsh then it has to; I do not mean you should use the guidelines to say 'do as I say or else'. 
 
 It's rather the other way around, guidelines should not be followed blindly!
 If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you 
@@ -26,8 +27,8 @@ demonstrate you thought about it and came to the conclusion that something else 
 
 # guidelines vs. style 
 
-- With 'style' I mean the location of spaces, tabs and newlines. But also the names of variables (both are non-functional)
-- With 'guidelines' I mean code changes that change behaviour of the code.
+- With 'style' I mean the location of spaces, tabs and newlines. But also the names of types, variables, functions etc. (typically all non-functional)
+- With 'guidelines' I will almsot always refer to changes that affect the behaviour of the code.
 
 references:
 
@@ -41,12 +42,12 @@ give you and your collegues consistent behaviour over various environments and e
 
 Suggestions for chosing a style:
 
-- Maybe conform with existing practices, if a certain style is already used for 90% of the code, the team might be used to reading this style and it might be worth configuring clang-format to
+- Consider conforming to existing practices, if a certain style is already used for 90% of the code, the team might be used to reading this style and it might be worth configuring clang-format to
   keep it close to the currect style.
-- Strive for consistency, something like: 'all type names start with a Capital' or all type names are 'snaked_cased'.
 - It can be very difficult to get clang-format to do _exactly_ what _you_ want, I found that is better to go through the options, look at the result and then adopt a set of options that you find least offensive ;)
+- Strive for consistency, prefer simple rules like: 'all type names start with a Capital' or all type names are 'snaked_cased'.
 - Remember that almost all style choices will find resistance with _someone_.
-- Remember that is ultimately most important to have one consistent style, because that is what gives better readability, rather then which style is chosen.
+- Remember that is ultimately more important to have **one consistent style**, because that is what gives better **readability**, rather then **which style** is chosen.
 - Consider using nouns for class names and verbs for function names.
 
 ```
