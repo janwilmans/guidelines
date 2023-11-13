@@ -91,7 +91,7 @@ If you can explain (to yourself): yes, I see the guidelines, but this case is sp
 You may consider wrapping that `reinterpret_cast` you need into a function and let the name explain the purpose or the 'why'.
 
 Finally, I invite you to read and study the [details](guidelines_details.md), let me know if you agree, disagree, have suggestions for improvements, 
-let's make it better!
+this document is alive and I'm sure will change for the better over time, let's make it better together!
 
 I'm looking forward to hearing from all of you!
 
