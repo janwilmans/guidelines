@@ -77,7 +77,12 @@ Suggestions for choosing a style:
 -   Make all destructors of classes in an inheritance hierarchy virtual
 -   Interfaces are defined as pure virtual classes that have a virtual = default destructor and do not contain member variables
 
-That's all folks!
+That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 
-Well there are more [details](guidelines_details.md), but I think if you follow the above guidelines, you are well on your way to writing decent code!
+
+Well there are [more details](guidelines_details.md) but I think if you follow the above guidelines, you are well on your way to writing decent code!
+You can see that the `guidelines` are quite 'bold', like 'do not use reinterpret_cast'. 
+And I can hear you think "but, sometimes". EXACTLY: **sometimes** you need it and that is why these are guidelines and not set in stone restrictions.
+If you can explain (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate, however, make it explicit.
+You may consider wrapping that `reinterpret_cast` you need into a function and let the name explain the purpose or the 'why'.
 
