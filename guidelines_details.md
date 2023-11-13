@@ -28,7 +28,6 @@
 -   Make all destructors of classes in an inheritance hierarchy `virtual`
 -   Declare `public`, `protected` and `private` in that order
 -   Avoid `protected` (usually indicates a design problem)
--   Reference qualify functions that return references or reference types. https://godbolt.org/z/s6j8GPGfz
 -   Add `[[nodiscard]]` to `const` member functions in header, do not repeat `[[nodiscard]]` for member functions in the implementation
 -   Add `[[nodiscard]]` to RAII classes to make them harder to use incorrectly
 -   Make getter member functions `const`
@@ -50,8 +49,8 @@
 -   Do not use raw pointers for ownership; use smart pointers instead. `std::unique_ptr` has negligible performance overhead compared to raw pointers.
 -   Use `static constexpr` for scoped variables inside functions or classes
 -   Use `inline constexpr` for globally scoped constants
--   Prefer enum classes over booleans, rationale: it states the intent clearly at the callsite (https://godbolt.org/z/nPn1s6bP6)
--   Group related variables that are always passed together into structs (https://godbolt.org/z/nzE8crErj)
+-   Prefer enum classes over booleans, rationale: it states the intent clearly at the call site (https://godbolt.org/z/7Mfo6oz1Y)
+-   Group related variables that are always passed together into structs (https://godbolt.org/z/7T3hqYnT4)
 
 ## Exceptions
 
@@ -64,7 +63,7 @@
 ## Misc
 
 -   List class data members in order big to small (rationale: reduces padding)
--   Put switch statements in a separate function where each case only returns immediately (https://godbolt.org/z/c9vvod3GW)
+-   Put switch statements in a separate function where each case only returns immediately (https://godbolt.org/z/cf8sjr8r3)
 -   Do not use more than `2` nested levels of conditional statements. If exceeded: refactor.
 -   Do not use manual memory management (e.g. `new`, `delete`, `malloc`, `free`)
     -   Exception: when working with Qt `new` is explicitly allowed
@@ -93,10 +92,11 @@ These discussion points lack proper guidance, if you have suggestions, please cr
 -   use `constexpr` + `noexcept` on getters?
 -   start by making every function constexpr and only take it away only when needed?
 -   do not use exceptions for code-flow decisions
+-   Reference qualify functions that return references or reference types. experimental: https://godbolt.org/z/s6j8GPGfz
 
 ## Examples
 
-What does code that applies there guidelines look like?
+What does code that applies these guidelines look like?
 
 ```cpp
 #include <string>
