@@ -25,7 +25,7 @@
 -   Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables
 -   Do not use aggregate initialization for defaults; either create constructors instead or use in-class initialization
 -   Prefer initializer lists over assignment in constructor body
--   Make all destructors of classes in an inheritance hierarchy `virtual`
+-   Mark all destructors of classes in an inheritance hierarchy `virtual` or `override` (https://godbolt.org/z/7E7Yx6faz)
 -   Declare `public`, `protected` and `private` in that order
 -   Avoid `protected` (usually indicates a design problem)
 -   Add `[[nodiscard]]` to `const` member functions in header, do not repeat `[[nodiscard]]` for member functions in the implementation
