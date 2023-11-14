@@ -1,6 +1,8 @@
 This is the "C++ guidelines and good practices" document by Jan Wilmans (c) 2023.
 
-I collected these guidelines from 20 years of C++ experience and many teachings by others, honorable mentions go to [Scott Meijers](https://www.youtube.com/watch?v=wQxj20X-tIU), [Jason Turner](https://www.youtube.com/@cppweekly), [Klaus Iglberger](https://www.youtube.com/watch?v=PEcy1vYHb8A), [the Copperspice team](https://www.youtube.com/@CopperSpice), [Hana Dusíková](https://www.youtube.com/watch?v=C9MWAXYdFSY), Gert-Jan de Vos, [Anthony Williams](https://www.youtube.com/watch?v=JvHZ_OECOFU) and [STL (Stephan T. Lavavej)](https://www.youtube.com/watch?v=JhgWFYfdIho) to name a few, probably I'm forgetting many others.
+I collected these guidelines from 20 years of C++ experience and many teachings by others, honorable mentions go to [Scott Meijers](https://www.youtube.com/watch?v=wQxj20X-tIU), [Jason Turner](https://www.youtube.com/@cppweekly), [Klaus Iglberger](https://www.youtube.com/watch?v=PEcy1vYHb8A), [the Copperspice team](https://www.youtube.com/@CopperSpice), [Hana Dusíková](https://www.youtube.com/watch?v=C9MWAXYdFSY), Gert-Jan de Vos, [Anthony Williams](https://www.youtube.com/watch?v=JvHZ_OECOFU) and [STL (Stephan T. Lavavej)](https://www.youtube.com/watch?v=JhgWFYfdIho) to name a few, probably I'm forgetting many others. 
+
+Most recently my colleagues [Adriaan de Groot](https://github.com/adriaandegroot/) and Stefan Spronkmans helped me to refine the guidelines and I owe them a big thank you!
 
 It is likely that some of the sources of what I describe here are found in any and all conference talks since CppCon, 16 Oct 2017. As I have spend countless hours visiting conferences and poring over the many, many videos of the talk I did not physically attend.
 
