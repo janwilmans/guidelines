@@ -4,18 +4,31 @@
 ## Files
 
 -   Files should not exceed `500` lines. If exceeded: refactor.
--   Use the `#pragma once` include guard in headers
+    -  **Rationale**: Large files are an indication of poor decomposition and lack of decomposition makes the code harder to understand.
+-   Use the `#pragma once` include guard in headers. 
+    -  **Rationale**: It does the job of protecting the header from multiple inclusion and although non-standard! most compilers support it.
+    -  Note: be aware the offers no protection from dubble inclusing if you sim-link a header. (don't do that ;)
 
 ## Functions and lambdas
 
 -   Return by value
     -   Wrap C-style functions with output parameters in a function that returns by value
+    -   **Rationale**: helps with local reasoning about object lifetime, reduces lifetime dependencies.
 -   Functions should not exceed `42` lines. If exceeded: refactor
+    -   **Rationale**: helps with (local) reasoning about the code, encourages decomposition.
 -   Functions and lambdas should not have more than `3` arguments
+    -   **Rationale**: this arbitrary limit encourages the author to consider if the function could/should not be split into multiple functions.
 -   Explicitly capture variables in lambdas
--   Do not use `inline` for performance reasons; compilers are smart enough to inline functions when possible
--   Do not return `nullptr` to indicate an error. Rationale: do not write code that can crash by not checking a return value.
--   Pass fundamental types (e.g. `double`) by value
+    - **Rationale**: explicit capturing expresses intent, avoids capturing 'this' by accident.
+-   Do not use `inline` for performance reasons
+    - **Rationale**: compilers are smart enough to inline functions when possible
+-   Do not return `nullptr` to indicate an error.
+    - **Rationale**: makes functions/interface harder to use correctly.
+-   Pass fundamental types (e.g. `double`) and small object arguments by value
+    - **Rationale**: passing things that fit in registers (64 bit -> 8 bytes) by referenfece is not a performance win and passing by value improves local reasoning.
+
+
+<details><summary>Rationale</summary>Large files are an indication of poor decomposition and lack of decomposition makes the code hard to understand.</details>
 
 ## Classes
 
