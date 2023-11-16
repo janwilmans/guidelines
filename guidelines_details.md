@@ -23,7 +23,7 @@
 -   Do not use `inline` for performance reasons
     - **Rationale**: compilers are smart enough to inline functions when possible
 -   Do not return `nullptr` to indicate an error.
-    - **Rationale**: makes functions/interface harder to use correctly.
+    - **Rationale**: makes functions/interface harder to use correctly, each caller must check for `nullptr`.
 -   Pass fundamental types (e.g. `double`) and small object arguments by value
     - **Rationale**: passing things that fit in registers (64 bit -> 8 bytes) by referenfece is not a performance win and passing by value improves local reasoning.
 
