@@ -8,9 +8,11 @@ Motto's or Mantra's can help convey a certain idea or act as a reminder to do or
 These are the mottos I find useful, some of them I learned from Gert-Jan de Vos who I'm eternally grateful for teaching me.
 
 - KISS (Keep It Simple Stupid)
+- Don't repeat yourself
 - Design for debugging is a self-fulfilling prophesy 
 - More explicit code is better code
-- Don't repeat yourself
+- Create a Pit of Success (Make interfaces and types hard to use incorrectly)
+- Comments are a code smell
 
 Simplifications; some of the guidelines or rationales say 'Just don't do that', in these cases I do mean to be cheeky. I mean
 try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
@@ -18,6 +20,15 @@ If you have ideas for improvement in this regard, feel free to leave me a note.
 
 I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents
 is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document.
+
+About Comments: I do mean, ALL comments are a code smell, but often comments are used to compensate in some way to the fact the author was aware there was something wrong but was not sure how to solve it. For example:
+
+```
+// this has undefined behavior, but I tested it, it works fine.
+void example() {}
+```
+
+
 
 </details>
 
@@ -58,8 +69,9 @@ is unlike writing code. The compiler reads all the code at once, but I do not ex
 -   Use `explicit` on all constructors of non-trivial types that take at least one argument 
     - **Rationale**: to prevent implicit conversions and make the construction visible at the call site
 -   Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables
-    - **Rationale**: 
--   Do not use aggregate initialization for defaults; either create constructors instead or use in-class initialization
+    - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1]
+-   Do not rely on aggregate initialization for assigning default value to members, either create constructors instead or use in-class initialization
+    - **Rationale**: when initialization is part of the type, it makes it harder to use incorrectly
 -   Prefer initializer lists over assignment in constructor body
 -   Mark all destructors of classes in an inheritance hierarchy `virtual` or `override` (https://godbolt.org/z/7E7Yx6faz)
 -   Declare `public`, `protected` and `private` in that order
@@ -183,3 +195,5 @@ std::optional<int> get_filesize(const std::filesystem::path& path)
     return {}; // return no value if the size could not be read
 }
 ```
+
+[^1]: Violation of Interface Segregation Principle (ISP): The Interface Segregation Principle states that a class should not be forced to implement interfaces it does not use. If an interface contains member variables that are not relevant to a particular class, it violates ISP
