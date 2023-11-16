@@ -27,9 +27,6 @@
 -   Pass fundamental types (e.g. `double`) and small object arguments by value
     - **Rationale**: passing things that fit in registers (64 bit -> 8 bytes) by referenfece is not a performance win and passing by value improves local reasoning.
 
-
-<details><summary>Rationale</summary>Large files are an indication of poor decomposition and lack of decomposition makes the code hard to understand.</details>
-
 ## Classes
 
 -   Use `explicit` on all constructors of non-trivial types that take at least one argument 
@@ -95,6 +92,8 @@
 
 ## Discussion
 
+<details>
+
 These discussion points lack proper guidance, if you have suggestions, please create an issue. 
 
 -   Fail Early. Check conditions in a function and bail out asap if possible.
@@ -106,6 +105,8 @@ These discussion points lack proper guidance, if you have suggestions, please cr
 -   start by making every function constexpr and only take it away only when needed?
 -   do not use exceptions for code-flow decisions
 -   Reference qualify functions that return references or reference types. experimental: https://godbolt.org/z/s6j8GPGfz
+
+</details>
 
 ## Examples
 
