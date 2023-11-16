@@ -11,7 +11,7 @@ These guidelines are free to use by anyone, if you find them useful, please send
 Most of the guidelines I describe here are generally considered 'Modern C++ guidelines' at the time of it's writing (2023). However many of them are and were applicable regardless of whether you use C++11, C++23 or anything in between.
 The guidelines are also mostly in line with Jason Turners's teachings on [C++ Weekly](https://www.youtube.com/@cppweekly). 
 
-# brief
+# Brief
 
 The way I deviate from other sources is usually in simplification, that is, I try to give guidance even where the answer really is "it depends". My reasoning is, yes, it depends, but a go-to default is still valuable. Because the more we choose the defaults, the least surprising the code.
 
@@ -19,7 +19,7 @@ Also I try to keep it brief. Nobody wants to read a 200 page document before the
 This is why I keep the 'Highest Level Summary' below and why there is some redundancy between this document and the 'detailed document'. 
 
 
-# guidelines
+# Guidelines
 
 The guidelines are well, guidelines. This means nothing is set in stone. 
 
@@ -34,7 +34,7 @@ It's rather the other way around, guidelines should not be followed blindly!
 If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you 
 demonstrate you thought about it and came to the conclusion that something else was better. And THAT IS GREAT.
 
-# guidelines vs. style 
+# Guidelines vs. Style 
 
 - With 'style' I mean the placement of spaces, tabs and newlines. But also the names of types, variables, functions etc. (typically all non-functional)
 
@@ -65,25 +65,23 @@ Suggestions for choosing a style:
 - Remember that is ultimately more important to have **one consistent style**, because that is what gives better **readability**, rather then **which style** is chosen.
 - Consider using nouns for class names and verbs for function names.
 
-
 ## Scope
 
 - Do not apply coding guidelines to third party code 
 - Also do not start changing every project of function you write into 'your' style, generally, try to conform to the local style used for a project.
 
-
 ## Highest Level Summary
 
--   Do not use C-style casts
--   Initialize all variables at declaration
--   Use `const` whenever you can (but not member variables)
--   Keep scope as limited as possible
--   No owning raw pointers
+-   Do not use C-style casts.
+-   Initialize all variables at declaration.
+-   Use `const` and `nodiscard` whenever you can (but no const for member variables).
+-   Keep scope as limited as possible.
+-   No owning raw pointers.
 -   No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
     -   When working with Qt the use of the new keyword explicitly allowed.
--   Do not use `volatile`, `const_cast` or `reinterpret_cast`, `typedef`, `register` or `extern`
--   Make all destructors of classes in an inheritance hierarchy virtual
--   Interfaces are defined as pure virtual classes that have a virtual = default destructor and do not contain member variables
+-   Do not use `volatile`, `const_cast` or `reinterpret_cast`, `typedef`, `register` or `extern`.
+-   Make all destructors of classes in an inheritance hierarchy virtual.
+-   Interfaces are defined as pure virtual classes that have a virtual = default destructor and do not contain member variables.
 
 That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 
@@ -92,7 +90,7 @@ Well there are [more details](guidelines_details.md) but I think if you follow t
 You can see that the `guidelines` are quite 'bold', like 'do not use reinterpret_cast'. 
 And I can hear you think "but, sometimes". 
 
-EXACTLY: **sometimes** you need it 
+EXACTLY: **sometimes** you need it.
 
 and that is why these are guidelines and not set in stone restrictions.
 If you can explain (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate, however, make it explicit.

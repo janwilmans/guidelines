@@ -1,5 +1,7 @@
 # More detailed guidelines
 
+I try to order each section's guidelines order of importance.
+
 <details><summary>Mottos</summary>
 
 # Motto's 
@@ -7,12 +9,20 @@
 Motto's or Mantra's can help convey a certain idea or act as a reminder to do or not do things.
 These are the mottos I find useful, some of them I learned from Gert-Jan de Vos who I'm eternally grateful for teaching me.
 
-- KISS (Keep It Simple Stupid)
-- Don't repeat yourself
-- Design for debugging is a self-fulfilling prophesy 
-- More explicit code is better code
-- Create a Pit of Success (Make interfaces and types hard to use incorrectly)
-- Comments are a code smell
+- KISS (Keep It Simple Stupid).
+- Don't repeat yourself.
+- Fail Early. (Check pre-conditions in a function and bail asap)
+- Design for debugging is a self-fulfilling prophesy.
+- More explicit code is better code.
+- Create a Pit of Success (Make interfaces and types hard to use incorrectly).
+- Comments are a code smell.
+
+## KISS
+
+This is perhaps the most difficult of all guidelines to describe and execute. Writing a simple (maybe elegant or short are also attributes) solution to a complicated problem or even not-writing a complicated solution to not-so difficult problem can sometimes be very hard.
+Rabbit holes and pitfalls are omnipresent in practice and side-stepping them and keeping things simple is a true art.
+
+"I didn’t have time to write you a short letter, so I wrote you a long one.” -- Mark Twain
 
 Simplifications; some of the guidelines or rationales say 'Just don't do that', in these cases I do mean to be cheeky. I mean
 try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
@@ -21,14 +31,24 @@ If you have ideas for improvement in this regard, feel free to leave me a note.
 I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents
 is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document.
 
-About Comments: I do mean, ALL comments are a code smell, but often comments are used to compensate in some way to the fact the author was aware there was something wrong but was not sure how to solve it. For example:
+About Comments: I do not mean: "Comment are bad", but often comments are used to compensate in some way to the fact the author was aware there was something wrong but was not sure how to solve it. So if you are breaking any of the guidelines, or are doing something unexpected, add a comment.
+Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
+
+These are examples of comments that are code smells, which doesn't mean I think you should remove them.
+I think these comments are justified. I would not be happy to find the first 'make_example', and I would try to refactor to make sure we do not 'rely' on code with known UB. However, I think the 'isInternetAvailable()' is fine, the name of function explains what we are trying to accomplish and comment explains how and why the author wrote it this way.
+
 
 ```
 // this has undefined behavior, but I tested it, it works fine.
-void example() {}
+void make_example() {}
 ```
 
+```
+// this function ping's 8.8.8.8 because I don't know a better way to do an online check
+// Returns true if the the ping-time is < 100ms.
+bool isInternetAvailable();
 
+```
 
 </details>
 
@@ -40,45 +60,50 @@ void example() {}
 
 -   Files should not exceed `500` lines. If exceeded: refactor.
     -  **Rationale**: Large files are an indication of poor decomposition and lack of decomposition makes the code harder to understand.
--   Put every class in its own file
-    - **Rationale**: helps to keep files smaller
--   Use the `#pragma once` include guard in headers. 
+-   Put every class in its own file.
+    - **Rationale**: helps to keep files smaller.
+-   Use the `#pragma once` include guard in headers.
     -  **Rationale**: It does the job of protecting the header from multiple inclusion and although non-standard! it is widely supported.
     -  Note: be aware the offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files. (don't do that ;) 
 
 ## Functions and lambdas
 
--   Return by value
-    -   Wrap C-style functions with output parameters in a function that returns by value
-    -   **Rationale**: helps with local reasoning about object lifetime, reduces lifetime dependencies.
--   Functions should not exceed `42` lines. If exceeded: refactor
-    -   **Rationale**: helps with (local) reasoning about the code, encourages decomposition.
--   Functions and lambdas should not have more than `3` arguments
-    -   **Rationale**: this arbitrary limit encourages the author to consider if the function could/should not be split into multiple functions.
--   Explicitly capture variables in lambdas
+- add `[[nodiscard]]` and `const` to all getters 
+    - **Rationale**: both enable the compiler to give you proper error messages, it makes the function hard to use incorrectly.
+-   Return by value.
+    -   Wrap C-style functions with output parameters in a function that returns by value.
+    - **Rationale**: helps with local reasoning about object lifetime, reduces lifetime dependencies.
+-   Functions should not exceed `42` lines. If exceeded: refactor.
+    - **Rationale**: helps with (local) reasoning about the code, encourages decomposition.
+-   Functions and lambdas should not have more than `3` arguments.
+    - **Rationale**: this arbitrary limit encourages the author to consider if the function could/should not be split into multiple functions.
+-   Explicitly capture variables in lambdas.
     - **Rationale**: explicit capturing expresses intent, avoids capturing 'this' by accident.
--   Do not use `inline` for performance reasons
-    - **Rationale**: compilers are smart enough to inline functions when possible
+-   Do not use `inline` for performance reasons.
+    - **Rationale**: compilers are smart enough to inline functions when possible.
 -   Do not return `nullptr` to indicate an error.
     - **Rationale**: makes functions/interface harder to use correctly, each caller must check for `nullptr`.
--   Pass fundamental types (e.g. `double`) and small object arguments by value
-    - **Rationale**: passing things that fit in registers (64 bit -> 8 bytes) by referenfece is not a performance win and passing by value improves local reasoning.
+-   Pass fundamental types (e.g. `double`) and small object arguments by value.
+    - **Rationale**: passing things that fit in registers (64 bit -> 8 bytes) by reference is not a performance win and passing by value improves local reasoning.
 
 ## Classes
 
--   Use `explicit` on all constructors of non-trivial types that take at least one argument 
-    - **Rationale**: to prevent implicit conversions and make the construction visible at the call site
--   Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables
-    - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1]
--   Do not rely on aggregate initialization for assigning default value to members, either create constructors instead or use in-class initialization
-    - **Rationale**: when initialization is part of the type, it makes it harder to use incorrectly
--   Prefer initializer lists over assignment in constructor body
--   Mark all destructors of classes in an inheritance hierarchy `virtual` or `override` (https://godbolt.org/z/7E7Yx6faz)
--   Declare `public`, `protected` and `private` in that order
--   Avoid `protected` (usually indicates a design problem)
--   Add `[[nodiscard]]` to `const` member functions in header, do not repeat `[[nodiscard]]` for member functions in the implementation
--   Add `[[nodiscard]]` to RAII classes to make them harder to use incorrectly
--   Make getter member functions `const`
+-   Add `[[nodiscard]]` to `const` member functions in the header, it adds nothing to repeat `[[nodiscard]]` for member functions in the implementation.
+    - **Rationale**: both enable the compiler to give you proper error messages, it makes the function hard to use incorrectly.
+-   Use `explicit` on all constructors of non-trivial types that take at least one argument.
+    - **Rationale**: to prevent implicit conversions and make the construction visible at the call site.
+-   Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables.
+    - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1].
+-   Do not rely on aggregate initialization for assigning default value to members, either create constructors instead or use in-class initialization.
+    - **Rationale**: when initialization is part of the type, it makes it harder to use incorrectly.
+-   Prefer member initializer lists over assignment in constructor body.
+    - **Rationale**: it's more efficient, it is construction instead construction followed by assignment.
+-   Mark all destructors of classes in an inheritance hierarchy `virtual` or `override`.
+    - **Rationale**: this prevents [subtle destruction bugs](https://godbolt.org/z/7E7Yx6faz).
+-   Declare `public`, `protected` and `private` in that order.
+    - **Rationale**: consistent style improves readability 
+-   Avoid `protected`, it usually indicates a design problem .
+    - **Rationale**: protected breaks the separation of concerns the base provides and make the hierarchy harder to reason about
 
 
 ## Variables
@@ -92,16 +117,17 @@ void example() {}
 -   Avoid globals. If really needed: use a static access method to encapsulate the global state
     - **Rationale**: avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order
 -   Prefer `auto` in places where it makes code more readable
-    - **Rationale**: do not repeat yourself
--   Use `auto *` when receiving a pointer
+    - **Rationale**: do not repeat yourself, auto variables cannot be left uninitialized. That being said, don't overuse it. example
+
+-   Use `auto *` when receiving a pointer.
     - **Rationale**: plain 'auto' would hide the fact that you are receiving a pointer.
 -   Prefer `static_cast` or `dynamic_cast` over C-style casts.
     -   Construction of explicit native types is allowed (i.e. `foo(double v) { int a(v);`)
 -   Do not use raw pointers for ownership; use smart pointers instead. `std::unique_ptr` has negligible performance overhead compared to raw pointers.
--   Use `static constexpr` for scoped variables inside implementation files, functions or classes
--   Use `inline constexpr` for globally scoped constants
--   Prefer enum classes over booleans, rationale: it states the intent clearly at the call site (https://godbolt.org/z/7Mfo6oz1Y)
--   Group related variables that are always passed together into structs (https://godbolt.org/z/7T3hqYnT4)
+-   Use `static constexpr` for scoped variables inside implementation files, functions or classes.
+-   Use `inline constexpr` for globally scoped constants.
+-   Prefer enum classes over booleans, rationale: it states the intent clearly at the call site. (https://godbolt.org/z/7Mfo6oz1Y)
+-   Group related variables that are always passed together into structs. (https://godbolt.org/z/7T3hqYnT4)
 
 ## Exceptions
 
@@ -114,7 +140,7 @@ void example() {}
 ## Misc
 
 -   List class data members in order big to small (rationale: reduces padding)
--   Put switch statements in a separate function where each case only returns immediately (https://godbolt.org/z/cf8sjr8r3)
+-   Put switch statements in a separate function where each case only returns immediately. [example](https://godbolt.org/z/cf8sjr8r3)
 -   Do not use more than `2` nested levels of conditional statements. If exceeded: refactor.
 -   Do not use manual memory management (e.g. `new`, `delete`, `malloc`, `free`)
     -   Exception: when working with Qt `new` is explicitly allowed
@@ -147,7 +173,8 @@ These discussion points lack proper guidance, if you have suggestions, please cr
 -   start by making every function constexpr and only take it away only when needed?
 -   do not use exceptions for code-flow decisions
 -   Reference qualify functions that return references or reference types. experimental: https://godbolt.org/z/s6j8GPGfz
-
+-   Add `[[nodiscard]]` to RAII classes to make them harder to use incorrectly.
+    - I forgot how to do this, https://godbolt.org/z/T4zdGro4r does not work
 </details>
 
 ## Examples
