@@ -1,13 +1,39 @@
 # More detailed guidelines
 
+<details><summary>Mottos</summary>
+
+# Motto's 
+
+Motto's or Mantra's can help convey a certain idea or act as a reminder to do or not do things.
+These are the mottos I find useful, some of them I learned from Gert-Jan de Vos who I'm eternally grateful for teaching me.
+
+- KISS (Keep It Simple Stupid)
+- Design for debugging is a self-fulfilling prophesy 
+- More explicit code is better code
+- Don't repeat yourself
+
+Simplifications; some of the guidelines or rationales say 'Just don't do that', in these cases I do mean to be cheeky. I mean
+try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
+If you have ideas for improvement in this regard, feel free to leave me a note.
+
+I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents
+is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document.
+
+</details>
+
+## Project structure
+
+-   Use advice from https://github.com/vector-of-bool/pitchfork to create a directory structure or invent your own, but use it consistently.
 
 ## Files
 
 -   Files should not exceed `500` lines. If exceeded: refactor.
     -  **Rationale**: Large files are an indication of poor decomposition and lack of decomposition makes the code harder to understand.
+-   Put every class in its own file
+    - **Rationale**: helps to keep files smaller
 -   Use the `#pragma once` include guard in headers. 
-    -  **Rationale**: It does the job of protecting the header from multiple inclusion and although non-standard! most compilers support it.
-    -  Note: be aware the offers no protection from dubble inclusing if you sim-link a header. (don't do that ;)
+    -  **Rationale**: It does the job of protecting the header from multiple inclusion and although non-standard! it is widely supported.
+    -  Note: be aware the offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files. (don't do that ;) 
 
 ## Functions and lambdas
 
@@ -30,9 +56,9 @@
 ## Classes
 
 -   Use `explicit` on all constructors of non-trivial types that take at least one argument 
-    - rationale: to prevent implicit conversions and make them visible at the call site
--   Put every class in its own file
+    - **Rationale**: to prevent implicit conversions and make the construction visible at the call site
 -   Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables
+    - **Rationale**: 
 -   Do not use aggregate initialization for defaults; either create constructors instead or use in-class initialization
 -   Prefer initializer lists over assignment in constructor body
 -   Mark all destructors of classes in an inheritance hierarchy `virtual` or `override` (https://godbolt.org/z/7E7Yx6faz)
@@ -51,13 +77,16 @@
     -   Do not use const for member variables (rationale: const member variables make the type unmovable and unassignable)
 -   Do not use references as member variables (rationale: reference members make the type unmovable and unassignable)
 -   Initialize variables at declaration
--   Avoid globals. If really needed: use a static access method to encapsulate the global state (rationale: avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order)
+-   Avoid globals. If really needed: use a static access method to encapsulate the global state
+    - **Rationale**: avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order
 -   Prefer `auto` in places where it makes code more readable
+    - **Rationale**: do not repeat yourself
 -   Use `auto *` when receiving a pointer
+    - **Rationale**: plain 'auto' would hide the fact that you are receiving a pointer.
 -   Prefer `static_cast` or `dynamic_cast` over C-style casts.
     -   Construction of explicit native types is allowed (i.e. `foo(double v) { int a(v);`)
 -   Do not use raw pointers for ownership; use smart pointers instead. `std::unique_ptr` has negligible performance overhead compared to raw pointers.
--   Use `static constexpr` for scoped variables inside functions or classes
+-   Use `static constexpr` for scoped variables inside implementation files, functions or classes
 -   Use `inline constexpr` for globally scoped constants
 -   Prefer enum classes over booleans, rationale: it states the intent clearly at the call site (https://godbolt.org/z/7Mfo6oz1Y)
 -   Group related variables that are always passed together into structs (https://godbolt.org/z/7T3hqYnT4)
@@ -90,9 +119,10 @@
 -   Use `const std::filesystem::path& path` for strings that refer to file-like objects, such as devices or files.
     - rationale: filesystem::path expresses intent, .c_str() gives zero-termination and `path` comes with handy functions.
 
-## Discussion
 
-<details>
+<details><summary>Discussion</summary>
+
+## Discussion
 
 These discussion points lack proper guidance, if you have suggestions, please create an issue. 
 
