@@ -30,7 +30,7 @@ The name must be `main` (or sometimes WinMain() on microsoft compilers, but that
 
 So in `main` returns a value `int` which is an integer (a signed numeric value) as the result of the program. On many OS's like windows, MacOS and Linux, there is a convention that the program returns zero if everything went OK and some error-code if the program failed is some way.
 
-If click on the [compiler explorer](https://compiler-explorer.com/z/5vYhnKh6h) link you will see first two lines, the output of building the program:
+If you click on the [compiler explorer](https://compiler-explorer.com/z/5vYhnKh6h) link you will see first two lines, the output of building the program:
 
 ```
 ASM generation compiler returned: 0
@@ -51,6 +51,6 @@ references to learn more:
 
 - https://cppreference.com/     ('the manual', for looking up all standard library features, reading it takes some getting used to)
 - https://roadmap.sh/cpp        (suggestions for a growth path, check it out, it has many nice explanations and guides)
-- https://nullptr.nl/blog       (my own blog, mainly random posts for specifically targeted at beginners)
+- https://nullptr.nl/blog       (my own blog, mainly random posts not specifically targeted at beginners)
 - https://nullptr.nl/2019/01/better-cpp-software-engineer/ (A specific blog post about 'how to learn more once you started')
 
