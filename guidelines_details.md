@@ -2,6 +2,12 @@
 
 I try to order each section's guidelines order of importance.
 
+| "I didn’t have time to write you a short letter, so I wrote you a long one.” -- Mark Twain
+
+Simplifications; some of the guidelines or rationales say 'Just don't do that', in these cases I do mean to be cheeky. I mean
+try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
+If you have ideas for improvement in this regard, feel free to leave me a note.
+
 <details><summary>Mottos</summary>
 
 # Motto's 
@@ -9,29 +15,33 @@ I try to order each section's guidelines order of importance.
 Motto's or Mantra's can help convey a certain idea or act as a reminder to do or not do things.
 These are the mottos I find useful, some of them I learned from Gert-Jan de Vos who I'm eternally grateful for teaching me.
 
-- KISS (Keep It Simple Stupid).
-- Don't repeat yourself.
+- KISS (Keep It Simple Stupid) and follow YAGNI (You Ain't Gonna Need It)
+- DRY (Don't repeat yourself).
 - Fail Early. (Check pre-conditions in a function and bail asap)
 - Design for debugging is a self-fulfilling prophesy.
 - More explicit code is better code.
 - Create a Pit of Success (Make interfaces and types hard to use incorrectly).
 - Comments are a code smell.
 
-## KISS
+## KISS & YAGNI
 
-This is perhaps the most difficult of all guidelines to describe and execute. Writing a simple (maybe elegant or short are also attributes) solution to a complicated problem or even not-writing a complicated solution to not-so difficult problem can sometimes be very hard.
+**KISS** is perhaps the most difficult of all guidelines to describe and execute. Writing a simple (maybe elegant or short are also attributes) solution to a complicated problem or even not-writing a complicated solution to not-so difficult problem can sometimes be very hard.
 Rabbit holes and pitfalls are omnipresent in practice and side-stepping them and keeping things simple is a true art.
+As an example, I recently implemented a [ICMP PING function](https://github.com/janwilmans/explain_icmp_ping), to make an 'is the internet available' function, 
+but this cost me several hours to make and the result is 288 lines of code. One alternative could have been to run `system("ping -W1 -c1 8.8.8.8")` and check if the return is 0. Which of these solutions is appropriate depends entirely on the use case. Also the level of control you have over the process is wildly different.
 
-"I didn’t have time to write you a short letter, so I wrote you a long one.” -- Mark Twain
+**YAGNI** is about choosing wisely and timely. You could just use a system-based ping first, until it turns out that is not good enough and you really need more control over, let's say, the timeout. Only then you spend more time to implement a more complex solution. Programmers have a tendency to think they know what they or users are going to need in the future. YAGNI says: good, keep that in mind, but do not implement anything you do not need right now.
 
-Simplifications; some of the guidelines or rationales say 'Just don't do that', in these cases I do mean to be cheeky. I mean
-try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
-If you have ideas for improvement in this regard, feel free to leave me a note.
+**DON'T REPEAT YOURSELF**: I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents
+is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document, some redundancy hopefully makes this document more understandable even if you just read one section. I **code** the DRY principle 
 
-I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents
-is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document.
+this is different and not repeating yourself means, do not copy-paste code every time, just to modify it slightly, instead write re-usable code.
 
-About Comments: I do not mean: "Comment are bad", but often comments are used to compensate in some way to the fact the author was aware there was something wrong but was not sure how to solve it. So if you are breaking any of the guidelines, or are doing something unexpected, add a comment.
+**FAIL EARLY**:
+
+
+
+**COMMENTS ARE A CODE SMELL**: I do not mean: "Comment are bad", but often comments are used to compensate in some way to the fact the author was aware there was something wrong but was not sure how to solve it. So if you are breaking any of the guidelines, or are doing something unexpected, add a comment.
 Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
 
 These are examples of comments that are code smells, which doesn't mean I think you should remove them.
