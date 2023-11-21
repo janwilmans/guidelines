@@ -35,18 +35,19 @@ but this cost me several hours to make and the result is 288 lines of code. One 
 **DRY: DON'T REPEAT YOURSELF**: I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document, some redundancy hopefully makes this document more understandable even if you just read one section. In software engineering the DRY principle refers to not repeating similar but functionally identical things in multiple places. Do not copy-paste code, just to modify it slightly, instead write re-usable code.
 
 **FAIL EARLY**: Detecting and handling errors as soon as they occur, but also exiting a function ASAP. This helps to reduce nested if-statement and improved readability.
-A function should deal with per-condition checks first. [here is an example](https://cppcoach.godbolt.org/z/s4nWr73Ea) here to understand "what the function" does, the reading can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow.
+A function should deal with per-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reading can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow.
 
-**COMMENTS ARE A CODE SMELL**: I do not mean: "Comment are bad", but often comments are used to compensate in some way to the fact the author was aware there was something wrong but was not sure how to solve it. So if you are breaking any of the guidelines, or are doing something unexpected, add a comment.
+**COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad" but often comments are used to compensate in some way to the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments ike 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc)
+
+If you are breaking any of the guidelines or are doing something unexpected, if it fine to add a comment.
 Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
 
-These are examples of comments that are code smells, which doesn't mean I think you should remove them.
-I think these comments are justified. I would not be happy to find the first 'make_example', and I would try to refactor to make sure we do not 'rely' on code with known UB. However, I think the 'isInternetAvailable()' is fine, the name of function explains what we are trying to accomplish and comment explains how and why the author wrote it this way.
-
+These are examples of comments that are code smells, which doesn't mean I think you should remove them without changing the code ;)
+I think these comments are justified. I would not be happy to find the first 'make_example' and I would try to refactor to make sure we do not 'rely' on code with known UB. However, I think the 'isInternetAvailable()' is fine, the name of function explains what we are trying to accomplish and comment explains how and why the author wrote it this way.
 
 ```
-// this has undefined behavior, but I tested it, it works fine.
-void make_example() {}
+// this has undefined behavior according to UBSAN, but I tested it, it works fine.
+void make_example();
 ```
 
 ```
