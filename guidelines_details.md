@@ -164,14 +164,14 @@ bool isInternetAvailable();
     - **Rationale**: if you wanted to group the data, you should probably add a struct.
 -   Do not return reference types, such as pointers or `std::string_view` from a function.
     - **Rationale**: this breaks local reasoning and it is very easy to create lifetime issues.
--   Use `std::string_view` for arguments to function that do not care about zero-termination of the passed string.
-    - **Rationale**: it is an efficient non-owning, just a pointer and a size, avoids unneeded string-copies, also allows you to pass `std::string` and `const char*`.
--   Use `const std::string&` for arguments to function that DO care about zero-termination.
-    - **Rationale**: specifically, functions that wrap C-functions should do this (and NOT use std::string_view, because it would require an internal code to guarantee zero-termination).
--   Use `std::string` and pass strings by value on constructor arguments that sink (move-construct a member variable) their value.
-    - **Rationale**: this allow the caller choose to move into the argument or make only one copy.
+-   Use `std::string_view` for arguments to a function that do not care about zero-termination of the passed string.
+    - **Rationale**: it is efficient and non-owning, just a pointer and a size, it avoids unneeded copies and also allows you to pass both `std::string` and `const char*`.
+-   Use `const std::string&` for arguments to function that **DO** care about zero-termination.
+    - **Rationale**: specifically, functions that wrap C-functions should do this (and **NOT** use std::string_view, because it would require internal code to guarantee the zero-termination).
+-   Use `std::string` and pass strings by value on constructor arguments that sink their value (arguments that are moved into a member variable).
+    - **Rationale**: this allows the caller to choose to move into the argument or make only one copy.
 -   Use `const std::filesystem::path& path` for strings that refer to file-like objects, such as devices or files.
-    - **Rationale**: filesystem::path expresses intent, .c_str() gives zero-termination and `path` comes with handy functions.
+    - **Rationale**: filesystem::path expresses intent, its `.c_str()` guarantees zero-termination and `path` comes with handy functions.
 
 
 <details><summary>Discussion</summary>
