@@ -72,6 +72,8 @@ Suggestions for choosing a style:
 
 ## Highest Level Summary
 
+Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
+
 -   Do not use C-style casts.
 -   Initialize all variables at declaration.
 -   Use `const` and `nodiscard` whenever you can (but no const for member variables).
