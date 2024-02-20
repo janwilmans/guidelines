@@ -2,7 +2,7 @@
 
 I try to order each section's guidelines order of importance.
 
-| "I didn’t have time to write you a short letter, so I wrote you a long one.” -- Mark Twain
+> **"I didn’t have time to write you a short letter, so I wrote you a long one.” -- Mark Twain**
 
 Simplifications; some of the guidelines or rationales say 'Just don't do that', in these cases I do mean to be cheeky. I mean
 try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
@@ -16,12 +16,13 @@ Motto's or Mantra's can help convey a certain idea or act as a reminder to do or
 These are the mottos I find useful, some of them I learned from Gert-Jan de Vos who I'm eternally grateful for teaching me.
 
 - KISS (Keep It Simple Stupid) followed by YAGNI (You Ain't Gonna Need It)
-- DRY (Don't repeat yourself).
+- DRY (Don't repeat yourself)
 - Fail Early. (Check pre-conditions in a function and bail asap)
-- Design for debugging is a self-fulfilling prophesy.
-- More explicit code is better code.
-- Create a Pit of Success (Make interfaces and types hard to use incorrectly).
-- Comments are a code smell.
+- Design for debugging is a self-fulfilling prophesy
+- More explicit code is better code
+- Create a Pit of Success (Make interfaces and types hard to use incorrectly)
+- Comments are a code smell
+- Prefer the most fitting tool for the job
 
 ## KISS & YAGNI
 
@@ -37,7 +38,7 @@ but this cost me several hours to make and the result is 288 lines of code. One 
 **FAIL EARLY**: Detecting and handling errors as soon as they occur, but also exiting a function ASAP. This helps to reduce nested if-statement and improved readability.
 A function should deal with per-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reading can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow.
 
-**COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad" but often comments are used to compensate in some way to the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments ike 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc)
+**COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". Often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc)
 
 If you are breaking any of the guidelines or are doing something unexpected, if it fine to add a comment.
 Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
@@ -54,8 +55,9 @@ void make_example();
 // this function ping's 8.8.8.8 because I don't know a better way to do an online check
 // Returns true if the the ping-time is < 100ms.
 bool isInternetAvailable();
-
 ```
+
+**THE MOST FITTING TOOL**: With the most fitting tool I mean, if you have a choise between more generic solutions and more specific solutions the more specific solution is almost always less error-prone. An example of this is `std::lock_guard`, it cannot unlock early and it takes only one lockable object. While `std::scoped_lock` can lock multiple object at once and `std::unique_lock` can unlock early. If you do not require the latter features, prefer `std::lock_guard`, as it does not have extra features and thus is harder to use incorrectly.
 
 </details>
 
