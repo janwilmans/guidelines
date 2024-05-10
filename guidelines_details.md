@@ -10,7 +10,7 @@ If you have ideas for improvement in this regard, feel free to leave me a note.
 
 <details><summary>Mottos</summary>
 
-# Motto's 
+# Mottos 
 
 Motto's or Mantra's can help convey a certain idea or act as a reminder to do or not do things.
 These are the mottos I find useful, some of them I learned from Gert-Jan de Vos who I'm eternally grateful for teaching me.
