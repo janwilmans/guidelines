@@ -28,9 +28,9 @@ To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=
 This does not mean you can "not think" and blindly follow the guidelines, it means, you think about the code, apply the defaults and if that looks like it is good enough, then do not make it more complicated, because following the guidelines will make for the 'least surprising code'.
 
 I found that the guidelines described here are reasonable default practices.
-The motto I recommend is: `comply or explain`. This means if you chose a non-default solution and deviated from a guideline, you should be able to explain in a review why. Also if might indicate, this is a particularly interesting piece of code so, maybe it deserves a comment to explain this. This might sound more harsh then it has to; I do not mean you should use the guidelines to say 'do as I say or else'. 
+The motto I recommend is: `comply or explain`. This sounds harsh, but it is just an easy to remember motto, do not take it as an order, just as a way to remember. It means if you choose a non-default solution and deviated from a guideline, you should be able to articulate why. Also it might indicate, it is a particularly interesting piece of code so, maybe it deserve a comment to explain a 'why'. 
 
-It's rather the other way around, guidelines should not be followed blindly!
+I do not mean you should use the guidelines to say 'do this or else' but rather the other way around, guidelines should not be followed blindly!
 If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you 
 demonstrate you thought about it and came to the conclusion that something else was better. And THAT IS GREAT.
 
