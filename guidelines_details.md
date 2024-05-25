@@ -73,7 +73,7 @@ bool isInternetAvailable();
     - **Rationale**: helps to keep files smaller.
 -   Use the `#pragma once` include guard in headers.
     -  **Rationale**: It does the job of protecting the header from multiple inclusion and although non-standard! it is widely supported.
-    -  Note: be aware the offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files. (don't do that ;) 
+    -  Note: be aware this offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files. (don't do that ;) 
 
 ## Functions and lambdas
 
