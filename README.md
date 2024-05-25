@@ -74,7 +74,7 @@ Suggestions for choosing a style:
 
 Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
 
--   Do not use C-style casts.
+-   Do not use C-style casts. [meme-link](![image](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7))
 -   Initialize all variables at declaration.
 -   Use `const` and `nodiscard` whenever you can (but no const for member variables).
 -   Keep scope as limited as possible.
