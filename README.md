@@ -4,11 +4,11 @@ I collected these guidelines from 20 years of C++ experience and many teachings 
 
 Most recently my colleagues [Adriaan de Groot](https://github.com/adriaandegroot/) and Stefan Spronkmans helped me to refine the guidelines and I owe them a big thank you!
 
-It is likely that some of the sources of what I describe here are found in any and all conference talks since CppCon, 16 Oct 2017. As I have spend countless hours visiting conferences and poring over the many, many videos of the talk I did not physically attend.
+It is likely that some of the sources of what I describe here are found in any and all conference talks since CppCon 2017. As I have spend countless hours visiting conferences and poring over the many, many videos of the talks I did not physically attend.
 
 These guidelines are free to use by anyone, if you find them useful, please send me a [Ko-fi](https://ko-fi.com/janwilmans).
 
-Most of the guidelines I describe here are generally considered 'Modern C++ guidelines' at the time of it's writing (2023). However many of them are and were applicable regardless of whether you use C++11, C++23 or anything in between.
+Most of the guidelines I describe here are generally considered 'Modern C++ guidelines' at the time of this writing (2023). However many of them are and were applicable regardless of whether you use C++11, C++23 or anything in between.
 The guidelines are also mostly in line with Jason Turners's teachings on [C++ Weekly](https://www.youtube.com/@cppweekly). 
 
 # Brief
@@ -23,7 +23,7 @@ This is why I keep the 'Highest Level Summary' below and why there is some redun
 
 The guidelines are well, guidelines. This means nothing is set in stone. 
 
-To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg): "I kinda like having a fence, because it keeps me from falling into the river accidentally. It doesn't stop you from going in, if you want to go into the river, go into the river.". I think this is a good way to think about these guidelines, use them as a default and if you go beyond them, treat carefully.
+To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg): "I kinda like having a fence, because it keeps me from falling into the river accidentally. It doesn't stop you from going in, if you want to go into the river, go into the river.". I think this is a good way to think about these guidelines as well, use them as a default and if you go beyond them, tread carefully.
 
 This does not mean you can "not think" and blindly follow the guidelines, it means, you think about the code, apply the defaults and if that looks like it is good enough, then do not make it more complicated, because following the guidelines will make for the 'least surprising code'.
 
@@ -63,13 +63,13 @@ Suggestions for choosing a style:
 - Strive for consistency, prefer simple rules like: 'all type names start with a Capital' or all type names are 'snaked_cased'.
 - Remember that almost all style choices will find resistance with _someone_.
 - Remember that is ultimately more important to have **one consistent style**, because that is what gives better **readability**, rather then **which style** is chosen.
-- Consider using nouns for class names and verbs for function names.
+- Consider using nouns for class names and verbs for function names. Try to avoid abbriviations in names, they might make sense to you, but probably future readers (maybe you) will not known or remember them.
 
 ## Scope
 
-- Do not apply coding guidelines to third party code 
-- Also do not start changing every project of function you write into 'your' style, generally, try to conform to the local style used for a project.
-
+- Do not apply your coding guidelines to third party code, it will make updates more difficult to diff and third party code is much less often read anyway.
+- Do not start changing every project or function you write into 'your' style, generally, try to conform to the local style used for a project. Style changes are best made per-project or per-repository, in big chunks.
+- 
 ## Highest Level Summary
 
 Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
