@@ -86,7 +86,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       -Wno-gnu-zero-variadic-macro-arguments
       -Wno-gnu-line-marker
   )
-endif()```
+endif()
+```
 
 ## MSVC
 
