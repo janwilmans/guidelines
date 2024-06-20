@@ -74,6 +74,7 @@ Suggestions for choosing a style:
 
 Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
 
+-   Turn on warnings! (see [details](warnings.md) here)
 -   Do not use C-style casts. [meme](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
 -   Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
 -   Use `const` and `nodiscard` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
