@@ -151,20 +151,22 @@ bool isInternetAvailable();
 ## Variables
 
 - Keep scope of variables as small as possible
-  **Rationale**: a smaller scope makes local reasoning easier and reduces opportunities to make mistakes
+  - **Rationale**: a smaller scope makes local reasoning easier and reduces opportunities to make mistakes
 - Declare variables on individual lines (i.e. no `int a, b, c;`)
-  **Rationale**: this improved readability and goes hand-in-hand with, initialize all variables at declaration.
+  - **Rationale**: this improved readability and goes hand-in-hand with, initialize all variables at declaration.
 - Use `const` whenever possible
-  - Do not use const for member variables (rationale: const member variables make the type unmovable and unassignable)
-- Do not use references as member variables (rationale: reference members make the type unmovable and unassignable)
+  - **Rationale**: Using const indicates that a variable's value will not change after initialization, which helps prevent accidental modifications. It makes the code safer and more predictable.
+- Do not use const for member variables
+  - **Rationale**: Const member variables make the type unmovable and unassignable, which can complicate the usage of objects, especially when using standard library containers or algorithms that rely on move semantics.
+- Do not use references as member variables
+  - **Rationale**: Reference members also make the type unmovable and unassignable, limiting the flexibility and usability of the class.
 - Initialize variables at declaration
-  **Rationale**: uninitialized values give unpredictable behavior and
+  **Rationale**:  Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
 - Avoid globals. If really needed: use a static access method to encapsulate the global state
-  - **Rationale**: avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order
+  - **Rationale**: Global variables make debugging difficult due to their wide scope.
+  - **Note** avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order
 - Prefer `auto` in places where it makes code more readable
-
   - **Rationale**: do not repeat yourself, auto variables cannot be left uninitialized. That being said, don't overuse it. example
-
 - Use `auto *` when receiving a pointer.
   - **Rationale**: plain 'auto' would hide the fact that you are receiving a pointer.
 - Prefer `static_cast` or `dynamic_cast` over C-style casts.
