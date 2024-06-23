@@ -85,6 +85,7 @@ Generally, use the most fitting tool for the job, if it has less features, it al
 -   Do not use `volatile`, `const_cast` or `reinterpret_cast`, `typedef`, `register` or `extern`.
 -   Make all destructors of classes used in runtime polymorphism virtual.
 -   Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
+-   Do not use protected member variables
 
 That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 
