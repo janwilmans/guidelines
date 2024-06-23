@@ -69,7 +69,7 @@ Suggestions for choosing a style:
 
 - Do not apply your coding guidelines to third party code, it will make updates more difficult to diff and third party code is much less often read anyway.
 - Do not start changing every project or function you write into 'your' style, generally, try to conform to the local style used for a project. Style changes are best made per-project or per-repository, in big chunks.
-- 
+
 ## Highest Level Summary
 
 Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
