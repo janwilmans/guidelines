@@ -81,9 +81,9 @@ bool isInternetAvailable();
   - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using warnings as errors further enforces code quality by making sure these issues are addressed.
 - Do not use C-style casts.
   - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (static_cast, dynamic_cast, const_cast, reinterpret_cast). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
-- Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
+- Initialize all variables at declaration.
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
-- Use `const` and `nodiscard` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
+- Use `const` and `nodiscard` whenever you can (but no const for member variables).
   - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. nodiscard is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where important values are inadvertently discarded. Avoiding const for member variables maintains consistency in class design and avoids potential complications with assignment operators.
 - Keep scope as limited as possible.
   - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
