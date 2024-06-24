@@ -172,11 +172,16 @@ bool isInternetAvailable();
 - Prefer `static_cast` or `dynamic_cast` over C-style casts.
   - Construction of explicit native types is allowed (i.e. `foo(double v) { int a(v);`)
   - **Rationale**:
-- Do not use raw pointers for ownership; use smart pointers instead. `std::unique_ptr` has negligible performance overhead compared to raw pointers.
+- Do not use raw pointers for ownership.
+  - **Rationale**: Use RAII objects or smart pointers instead. `std::unique_ptr` has minimal performance overhead and ensures that an object has a single owner.
 - Use `static constexpr` for scoped variables inside implementation files, functions or classes.
+  - **Rationale**: Static constexpr ensures that the variable is constant and has internal linkage, meaning it is limited to the scope in which it is declared.
 - Use `inline constexpr` for globally scoped constants.
-- Prefer enum classes over booleans, rationale: it states the intent clearly at the call site. (https://cppcoach.godbolt.org/z/7eP7vE9G5)
+  - **Rationale**: Allows the definition of a constant in a header file without violating the one definition rule (ODR), ensuring that the constant has internal linkage but can still be included in multiple translation units.
+- Prefer enum classes over booleans, rationale: 
+  - **Rationale**: It states the intent clearly at the call site. (https://cppcoach.godbolt.org/z/7eP7vE9G5)
 - Group related variables that are always passed together into structs. (https://cppcoach.godbolt.org/z/vxnxK1sv7)
+  - **Rationale**: Grouping related variables enhances code organization and readability
 
 ## Exceptions
 
@@ -187,27 +192,37 @@ bool isInternetAvailable();
 
 ## Misc
 
-- List class data members in order big to small (rationale: reduces padding)
+- List class data members in order big to small
+  - **Rationale**: Arranging data members from largest to smallest size can reduce memory padding aka alignment overhead. 
 - Put switch statements in a separate function where each case only returns immediately. [example](https://cppcoach.godbolt.org/z/hca48Gjnq)
+  - **Rationale**: Isolating switch statements into separate functions and having each case return immediately simplifies the logic, making the code more readable and maintainable. 
 - Do not use more than `2` nested levels of conditional statements. If exceeded: refactor.
-- Do not use manual memory management (e.g. `new`, `delete`, `malloc`, `free`)
-  - Exception: when working with Qt `new` is explicitly allowed
-- Do not use `const_cast`, `reinterpret_cast`, `typedef`, `register` and `extern`
-- Prefer `nullptr` rather than `0` or `NULL`, rationale: `nullptr`` does not implicitly convert to non-pointers.
+  - **Rationale**: By limiting nesting to two levels, the code remains more straightforward and easier to follow. If more nesting is needed, it typically indicates that the function is doing too much and should be refactored into smaller, more manageable pieces.
+- Prefer `nullptr` over `0` or `NULL`.
+  - **Rationale**: `nullptr`` does not implicitly convert to non-pointers
 - Prefer functionality from the STL library over third-party libraries (e.g. Boost)
+  - **Rationale**: Using the STL reduces dependencies on third-party libraries, simplifies builds, reduces potential for compatibility issues, and ensures long-term code stability.
 - Move `static_assert` out of headers, so they are checked only once.
+  - **Rationale**: Placing static_assert in implementation files rather than headers ensures that assertions are checked only once, reducing compile times and avoiding redundant checks across multiple translation units. 
 - Empty lines between data members is a code smell.
-  - **Rationale**: if you wanted to group the data, you should probably add a struct.
+  - **Rationale**: indicative of poorly thought-out class design where related members are not grouped together. 
 - Do not return reference types, such as pointers or `std::string_view` from a function.
-  - **Rationale**: this breaks local reasoning and it is very easy to create lifetime issues.
+  - **Rationale**: this breaks local reasoning and because the called not need to know about the lifetime of the referenced object.
 - Use `std::string_view` for arguments to a function that do not care about zero-termination of the passed string.
   - **Rationale**: it is efficient and non-owning, just a pointer and a size, it avoids unneeded copies and also allows you to pass both `std::string` and `const char*`.
 - Use `const std::string&` for arguments to function that **DO** care about zero-termination.
   - **Rationale**: specifically, functions that wrap C-functions should do this (and **NOT** use std::string_view, because it would require internal code to guarantee the zero-termination).
-- Use `std::string` and pass strings by value on constructor arguments that sink their value (arguments that are moved into a member variable).
+- Use `std::string` and pass strings by value on constructor arguments that sink their value (arguments that are moved into a member
+  variable).
   - **Rationale**: this allows the caller to choose to move into the argument or make only one copy.
 - Use `const std::filesystem::path& path` for strings that refer to file-like objects, such as devices or files.
   - **Rationale**: filesystem::path expresses intent, its `.c_str()` guarantees zero-termination and `path` comes with handy functions.
+- do not use exceptions for code-flow decisions aka. do not throw if you expect you will need to catch the exception as part of the
+  business logic of your application. Exceptions are for 'exceptional' cases, so only when continueing normal exection isn't possible.
+  - **Rationale**: using expections for business logic breaks the concept of local reasoning, you 'expect' certain callees to throw under certain conditions. Also stack-unwinding it not free in terms of performance; using exceptions for code-flow decisions leads to less readable, harder to maintain, and potentially less performant code
+- Avoid `requires requires`
+  - **Rationale**: it is a shorthand for an in-place unnamed concept, give it a name.
+
 
 <details><summary>Discussion</summary>
 
@@ -215,14 +230,13 @@ bool isInternetAvailable();
 
 These discussion points lack proper guidance, if you have suggestions, please create an issue.
 
-- Fail Early. Check conditions in a function and bail out asap if possible.
 - When is `std::optional` a good solution? A function that may or may not produce output? required checking the result on every call seems bad.
+  - **Rationale**: It explicitly communicates that the absence of a value is a valid state state should be checked agaist.
+
 - When to use assertions and when to use exceptions?
-- Avoid `requires requires`, rationale: it is a shorthand for an in-place defined unnamed concept, give it a name.
 - use `noexcept` on function you know cannot throw an exception for performance, discuss how to deal with changing code over time.
 - use `constexpr` + `noexcept` on getters?
 - start by making every function constexpr and only take it away only when needed?
-- do not use exceptions for code-flow decisions
 - Reference qualify functions that return references or reference types. experimental: https://godbolt.org/z/s6j8GPGfz
   https://cppcoach.godbolt.org/z/dozvvsEv8
   https://cppcoach.godbolt.org/z/cG3sTTdd5
