@@ -97,7 +97,7 @@ And I can hear you think "but, sometimes".
 
 EXACTLY: **sometimes** you need it.
 
-and that is why these are guidelines and not set in stone restrictions.
+and that is why (I repeat) these are guidelines and not set in stone restrictions.
 If you can explain (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate, however, make it explicit.
 You may consider wrapping that `reinterpret_cast` you need into a function and let the name explain the purpose or the 'why'.
 
