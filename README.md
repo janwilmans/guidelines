@@ -23,16 +23,16 @@ This is why I keep the 'Highest Level Summary' below and why there is some redun
 
 # Guidelines
 
-The guidelines are well, guidelines. This means nothing is set in stone. 
+These guidelines are just that, guidelines. They aren't rigid rules.
 
-To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg): "I kinda like having a fence, because it keeps me from falling into the river accidentally. It doesn't stop you from going in, if you want to go into the river, go into the river.". I think this is a good way to think about these guidelines as well, use them as a default and if you go beyond them, tread carefully.
+To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg): "I kinda like having a fence, because it keeps me from falling into the river accidentally. It doesn't stop you from going in, if you want to go into the river, go into the river." I think this is a good way to think about these guidelines as well, use them as a default and if you go beyond them, tread carefully.
 
-This does not mean you can "not think" and blindly follow the guidelines, it means, you think about the code, apply the defaults and if that looks like it is good enough, then do not make it more complicated, because following the guidelines will make for the 'least surprising code'.
+This doesn't mean you should follow the guidelines mindlessly. Instead, think about the code, apply the defaults and and if they work well, don't complicate things further. Following the guidelines typically results in the least surprising code.
 
-I found that the guidelines described here are reasonable default practices.
-The motto I recommend is: `comply or explain`. This sounds harsh, but it is just an easy to remember motto, do not take it as an order, just as a way to remember. It means if you choose a non-default solution and deviated from a guideline, you should be able to articulate why. Also it might indicate, it is a particularly interesting piece of code so, maybe it deserve a comment to explain a 'why'. 
+I find that the guidelines outlined here are reasonable default practices.
+The motto I recommend is: comply or explain. While it might sound harsh, it is just an easy to remember motto, do not take it as an order, just as a way to remember. It means if you choose a non-default solution and deviated from a guideline, you should be able to articulate why. Such instances may indicate particularly interesting code, could benefit from a comment explaining a 'why'. 
 
-I do not mean you should use the guidelines to say 'do this or else' but rather the other way around, guidelines should not be followed blindly!
+The goal isn't to use the guidelines as a strict "do this or else" directive but rather the other way around, guidelines should not be followed blindly!
 If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you 
 demonstrate you thought about it and came to the conclusion that something else was better. And THAT IS GREAT.
 
