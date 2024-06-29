@@ -93,15 +93,19 @@ That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 ## Oh wait, there is more!
 
 Well there are [more details](guidelines_details.md) but I think if you follow the above guidelines, you are well on your way to writing decent code!
-You can see that the `guidelines` are quite 'bold', like 'do not use reinterpret_cast'. 
-And I can hear you think "but, sometimes". 
+As you can see the above guidelines are quite bold, like: "do not use reinterpret_cast". 
+And I can hear you think "but, sometimes...". 
 
 EXACTLY: **sometimes** you need it.
 
 And that is why (I repeat) these are guidelines, not rigid rules. 
-If you can justify (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate. However, make it explicit. You may consider wrapping that `reinterpret_cast` you need into a function and let the name explain the purpose or the reason **why** it is needed. 
+If you can justify (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate. However, make it explicit. You may consider wrapping that `reinterpret_cast` you need into a function and let the function name explain the purpose or the reason **why** it is needed. 
 
-Finally, I invite you to read and study the [details](guidelines_details.md). Let me know if you agree, disagree, have suggestions for improvements. This document is alive and will evolve over time. Let's make it better together!
+## Feedback very welcome!
+
+Finally, I encourage you to review and delve into the [details](guidelines_details.md). Please share your thoughts, whether you agree, disagree, or have suggestions for enhancements. This document is alive and will evolve over time. Let's make it better together!
+
+You can find me as @janwilmans on Twitter/X or just create an issue on this repo and discuss.
 
 I'm looking forward to hearing from all of you!
 

@@ -4,7 +4,7 @@ I try to order each section's guidelines order of importance.
 
 > **"I didn’t have time to write you a short letter, so I wrote you a long one.” -- Mark Twain**
 
-Simplifications; some of the guidelines or rationales might say 'Just don't do that', in these cases I do not mean to be cheeky. I mean
+Simplifications; sometimes a rationale might sounds like: 'Just don't do that', in these cases I do not mean to be cheeky. I mean
 try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
 If you have ideas for improvement in this regard, feel free to leave me a note.
 
@@ -17,7 +17,7 @@ These are the mottos I find useful, some of them I learned from Gert-Jan de Vos 
 
 - KISS (Keep It Simple Stupid) followed by YAGNI (You Ain't Gonna Need It)
 - DRY (Don't repeat yourself)
-- Fail Early (Check pre-conditions in a function and bail asap)
+- Fail Early, use Guard Clauses (Check pre-conditions in a function and bail asap)
 - Design for debugging is a self-fulfilling prophesy
 - More explicit code is better code
 - Create a Pit of Success (Make interfaces and types hard to use incorrectly)
@@ -136,7 +136,7 @@ bool isInternetAvailable();
   - **Rationale**: to prevent implicit conversions and make the construction visible at the call site.
 - Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables.
   - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1].
-- Do not rely on aggregate initialization for assigning default value to members, either create constructors instead or use in-class initialization.
+- Do not rely on aggregate initialization for assigning default value to members, either create constructors or use in-class initialization.
   - **Rationale**: when initialization is part of the type, it makes it harder to use incorrectly.
 - Prefer member initializer lists over assignment in constructor body.
   - **Rationale**: it's more efficient, it is construction instead construction followed by assignment.
@@ -145,9 +145,11 @@ bool isInternetAvailable();
 - Declare `public`, `protected` and `private` in that order.
   - **Rationale**: consistent style improves readability
 - Avoid `protected`, it usually indicates a design problem .
-  - **Rationale**: protected breaks the separation of concerns the base provides and make the hierarchy harder to reason about
-- Add `[[nodiscard]]` to RAII classes
-  - **Rationale**: make them [hard to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
+  - **Rationale**: protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
+- Make RAII class undiscardable using `[[nodiscard]]`
+  - **Rationale**: this make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
+- Avoid assigning  members in the constructor body, use the member initializer list or in-class initialization.
+  - **Rationale**: makes the default constructor mandatory and forces [double initialization ](https://cppcoach.godbolt.org/z/87eWx351f)
 
 ## Variables
 
@@ -238,9 +240,8 @@ These discussion points lack proper guidance, if you have suggestions, please cr
 - use `noexcept` on function you know cannot throw an exception for performance, discuss how to deal with changing code over time.
 - use `constexpr` + `noexcept` on getters?
 - start by making every function constexpr and only take it away only when needed?
-- Reference qualify functions that return references or reference types. experimental: https://godbolt.org/z/s6j8GPGfz
-  https://cppcoach.godbolt.org/z/dozvvsEv8
-  https://cppcoach.godbolt.org/z/cG3sTTdd5
+- Delete reference qualified overloads of getters that return references or reference types. experimental: 
+  - https://cppcoach.godbolt.org/z/eszM1esas
 
 </details>
 
@@ -272,17 +273,26 @@ public:
 private:
     std::string m_name;
 };
+```
+
+```
+// applies: filesystem, optional
+
+// the comments are to illustrate the example, 
+// in production code I would not recommend to add these comments, because the 
+// reverse is true: you used 'std::filesystem::path' so you are expressing intent 
+// this function takes a 'file-like object'.
 
 #include <filesystem>
 #include <optional>
 
 #include <sys/stat.h>
 
-// zero-termination, filesystem::path
+// referring to a file-like object so use filesystem::path
 std::optional<int> get_filesize(const std::filesystem::path& path)
 {
     struct stat64 meta_data = {};
-    if (0 == stat64(path.c_str(), &meta_data))  //  stat64 requires zero-termination
+    if (0 == stat64(path.c_str(), &meta_data)) // stat64 requires zero-termination
     {
         return meta_data.st_size;
     }
