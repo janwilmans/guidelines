@@ -92,7 +92,7 @@ bool isInternetAvailable();
 - No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
   - When working with Qt or [Copperspice](www.copperspice.com) the use of the new keyword explicitly allowed.
   - **Rationale**: Manual memory management is error-prone and can lead to memory leaks, double deletions, and other issues. Qt and Copperspice have its own memory management mechanism, so new for those types of classes is actually not indicative of manual memory management.
-- Do not use `volatile`, `const_cast` or `reinterpret_cast`, `typedef`, `register` or `extern`.
+- Do not use `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`
   - **Rationale**:
     - `volatile`: Generally misunderstood and misused, leading to potential issues with optimization and undefined behavior. Modern concurrency mechanisms provide safer alternatives.
     - `const_cast`: Violates const-correctness, which can lead to undefined behavior.
@@ -100,6 +100,7 @@ bool isInternetAvailable();
     - `typedef`: Superseded by using, which is more powerful and consistent with other type alias features in C++11 and later.
     - `register`: Deprecated and ignored by modern compilers, making it obsolete.
     - `extern`: Encourages global state, which is generally bad practice as it can lead to code that is difficult to understand and maintain.
+    - `protected`: Breaks encapsulation to some extend because it allows derived classes to access internal state.
 - Make all destructors of classes used in runtime polymorphism virtual.
   - **Rationale**: Ensuring destructors are virtual in base classes used polymorphically prevents undefined behavior when derived class objects are deleted through base class pointers. This ensures that the correct destructor is called, which is crucial for proper resource cleanup in derived classes.
 - Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
@@ -114,8 +115,8 @@ bool isInternetAvailable();
 - Return by value.
   - Wrap C-style functions with output parameters in a function that returns by value.
   - **Rationale**: helps with local reasoning about object lifetime, reduces lifetime dependencies.
-- Functions should not exceed `42` lines. If exceeded: refactor.
-  - **Rationale**: helps with (local) reasoning about the code, encourages decomposition.
+- Keep functions limited to 42 lines. If a function exceeds this limit, refactor it while balancing the need for concise code and keeping related logic together.
+  - **Rationale**: helps with (local) reasoning about the code, encourages decomposition
 - Functions and lambdas should not have more than `3` arguments.
   - **Rationale**: this arbitrary limit encourages the author to consider if the function could/should not be split into multiple functions.
 - Explicitly capture variables in lambdas.

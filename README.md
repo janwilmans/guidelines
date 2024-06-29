@@ -8,18 +8,16 @@ Most recently my colleagues [Adriaan de Groot](https://github.com/adriaandegroot
 
 It is likely that some of the sources of what I describe here are found in any and all conference talks since CppCon 2017. As I have spend countless hours visiting conferences and poring over the many, many videos of the talks I did not physically attend.
 
-These guidelines are free to use by anyone, if you find them useful, please send me a [Ko-fi](https://ko-fi.com/janwilmans).
+These guidelines are free to use by anyone, if you find them useful, I would appreciate your support through a [Ko-fi](https://ko-fi.com/janwilmans).
 
-Most of the guidelines I describe here are generally considered 'Modern C++ guidelines' at the time of this writing (2023). However many of them are and were applicable regardless of whether you use C++11, C++23 or anything in between.
+Most of the guidelines I describe here are generally considered 'Modern C++ guidelines' as of 2023. However, many of them are applicable regardless of whether you use C++11, C++23 or anything in between.
 The guidelines are also mostly in line with Jason Turners's teachings on [C++ Weekly](https://www.youtube.com/@cppweekly). 
 
 # Brief
 
-The way I deviate from other sources is usually in simplification, that is, I try to give guidance even where the answer really is "it depends". My reasoning is, yes, it depends, but a go-to default is still valuable. Because the more we choose the defaults, the least surprising the code.
+My approach typically deviates from other sources through simplification. I try to offer guidance even when the answer is "it depends." My reasoning is that, while it does depend, having a go-to default is still valuable. The more we choose the defaults, the less surprising the code becomes.
 
-Also I try to keep it brief. Nobody wants to read a 200 page document before they start coding and also it would be hard to keep all of it in mind all the time.
-This is why I keep the 'Highest Level Summary' below and why there is some redundancy between this document and the 'detailed document'. 
-
+I also strive to keep it brief. Nobody wants to read a 200-page document before they start coding, and it's difficult to keep all of that in mind all the time. This is why I provide the 'Highest Level Summary' below and why there is some redundancy between this document and the 'detailed document'.
 
 # Guidelines
 
@@ -59,13 +57,12 @@ There is an example `.clang-format` file included in the repository which was us
 
 Suggestions for choosing a style:
 
-- Consider conforming to existing practices, if a certain style is already used for 90% of the code, the team might be used to reading this style and it might be worth configuring clang-format to
-  keep it close to the current style.
+- Consider conforming to existing practices, if a certain style is already used for 90% of the code, the team is likely accustomed to reading this style. It might be worthwhile to configure clang-format to keep it close to the current style.
 - It can be very difficult to get clang-format to do _exactly_ what _you_ want, I found that is better to go through the options, look at the result and then adopt a set of options that you find least offensive ;)
-- Strive for consistency, prefer simple rules like: 'all type names start with a Capital' or all type names are 'snaked_cased'.
+- Strive for consistency. Prefer simple rules like: 'all type names start with a capital letter' or all type names are 'snake_cased'.
 - Remember that almost all style choices will find resistance with _someone_.
-- Remember that is ultimately more important to have **one consistent style**, because that is what gives better **readability**, rather then **which style** is chosen.
-- Consider using nouns for class names and verbs for function names. Try to avoid abbriviations in names, they might make sense to you, but probably future readers (maybe you) will not known or remember them.
+- Ultimately it is more important to have **one consistent style**, because that is what enhances **readability**, rather then **which style** is chosen.
+- Consider using nouns for class names and verbs for function names. Try to avoid abbreviations in names; they might make sense to you, but probably future readers (including yourself) might not understand or remember them.
 
 ## Scope
 
@@ -77,19 +74,23 @@ Suggestions for choosing a style:
 Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
 
 -   Turn on warnings! (see [details](warnings.md) here)
--   Do not use C-style casts. [meme](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
+-   Keep the scope of variables and type declarations as limited as possible.
 -   Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
 -   Use `const` and `nodiscard` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
--   Keep scope as limited as possible.
+-   Use automatic resource management (RAII).
 -   No owning raw pointers.
 -   No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
     -   When working with Qt the use of the new keyword explicitly allowed.
--   Do not use `volatile`, `const_cast` or `reinterpret_cast`, `typedef`, `register` or `extern`.
+-   Do not use C-style casts. [meme](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
+-   Do not use `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`.
 -   Make all destructors of classes used in runtime polymorphism virtual.
 -   Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
--   Do not use protected member variables
+-   Do not use protected member variables.
 
 That's all folks! As you can see, C++ is easy ;) as long as you KISS.
+
+
+## Oh wait, there is more!
 
 Well there are [more details](guidelines_details.md) but I think if you follow the above guidelines, you are well on your way to writing decent code!
 You can see that the `guidelines` are quite 'bold', like 'do not use reinterpret_cast'. 
@@ -97,12 +98,10 @@ And I can hear you think "but, sometimes".
 
 EXACTLY: **sometimes** you need it.
 
-and that is why (I repeat) these are guidelines and not set in stone restrictions.
-If you can explain (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate, however, make it explicit.
-You may consider wrapping that `reinterpret_cast` you need into a function and let the name explain the purpose or the 'why'.
+And that is why (I repeat) these are guidelines, not rigid rules. 
+If you can justify (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate. However, make it explicit. You may consider wrapping that `reinterpret_cast` you need into a function and let the name explain the purpose or the reason **why** it is needed. 
 
-Finally, I invite you to read and study the [details](guidelines_details.md), let me know if you agree, disagree, have suggestions for improvements, 
-this document is alive and I'm sure will change for the better over time, let's make it better together!
+Finally, I invite you to read and study the [details](guidelines_details.md). Let me know if you agree, disagree, have suggestions for improvements. This document is alive and will evolve over time. Let's make it better together!
 
 I'm looking forward to hearing from all of you!
 
