@@ -79,19 +79,19 @@ bool isInternetAvailable();
 
 - Turn on warnings!
   - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using warnings as errors further enforces code quality by making sure these issues are addressed.
-- Do not use C-style casts.
-  - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (static_cast, dynamic_cast, const_cast, reinterpret_cast). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
+- Keep scope as limited as possible.
+  - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
 - Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
 - Use `const` and `nodiscard` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
   - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. nodiscard is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where important values are inadvertently discarded. Avoiding const for member variables maintains consistency in class design and avoids potential complications with assignment operators.
-- Keep scope as limited as possible.
-  - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
 - No owning raw pointers.
   - **Rationale**: Owning raw pointers are prone to memory leaks and dangling pointers. Using smart pointers (std::unique_ptr, std::shared_ptr) provides automatic memory management, reducing the risk of such errors. Add remark on non-owning raw pointers
 - No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
   - When working with Qt or [Copperspice](www.copperspice.com) the use of the new keyword explicitly allowed.
   - **Rationale**: Manual memory management is error-prone and can lead to memory leaks, double deletions, and other issues. Qt and Copperspice have its own memory management mechanism, so new for those types of classes is actually not indicative of manual memory management.
+- Do not use C-style casts.
+  - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (static_cast, dynamic_cast, const_cast, reinterpret_cast). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
 - Do not use `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`
   - **Rationale**:
     - `volatile`: Generally misunderstood and misused, leading to potential issues with optimization and undefined behavior. Modern concurrency mechanisms provide safer alternatives.
@@ -155,26 +155,25 @@ bool isInternetAvailable();
 
 - Keep scope of variables as small as possible
   - **Rationale**: a smaller scope makes local reasoning easier and reduces opportunities to make mistakes
-- Declare variables on individual lines (i.e. no `int a, b, c;`)
-  - **Rationale**: this improved readability and goes hand-in-hand with, initialize all variables at declaration.
+- Initialize variables at declaration
+  **Rationale**:  Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.- Declare variables on individual lines (i.e. no `int a, b, c;`)
+  - **Rationale**: this improved readability and goes hand-in-hand with: initialize all variables at declaration.
 - Use `const` whenever possible
   - **Rationale**: Using const indicates that a variable's value will not change after initialization, which helps prevent accidental modifications. It makes the code safer and more predictable.
 - Do not use const for member variables
   - **Rationale**: Const member variables make the type unmovable and unassignable, which can complicate the usage of objects, especially when using standard library containers or algorithms that rely on move semantics.
 - Do not use references as member variables
   - **Rationale**: Reference members also make the type unmovable and unassignable, limiting the flexibility and usability of the class.
-- Initialize variables at declaration
-  **Rationale**:  Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
 - Avoid globals. If really needed: use a static access method to encapsulate the global state
   - **Rationale**: Global variables make debugging difficult due to their wide scope.
   - **Note** avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order
 - Prefer `auto` in places where it makes code more readable
-  - **Rationale**: do not repeat yourself, auto variables cannot be left uninitialized. That being said, don't overuse it. example
+  - **Rationale**: do not repeat yourself, auto variables cannot be left uninitialized. That being said, don't overuse it.
 - Use `auto *` when receiving a pointer.
   - **Rationale**: plain 'auto' would hide the fact that you are receiving a pointer.
 - Prefer `static_cast` or `dynamic_cast` over C-style casts.
-  - Construction of explicit native types is allowed (i.e. `foo(double v) { int a(v);`)
-  - **Rationale**:
+  - Explicitly constructing native types to do narrowing conversion is allowed (i.e. `void example(double v) { int a(v);`)
+  - **Rationale**: C++ style casting make the type conversion explicit, which helps understanding the programmer's intent
 - Do not use raw pointers for ownership.
   - **Rationale**: Use RAII objects or smart pointers instead. `std::unique_ptr` has minimal performance overhead and ensures that an object has a single owner.
 - Use `static constexpr` for scoped variables inside implementation files, functions or classes.
