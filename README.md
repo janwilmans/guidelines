@@ -78,17 +78,17 @@ Generally, use the most fitting tool for the job, if it has less features, it al
 -   Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
 -   Use `const` and `nodiscard` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
 -   Use automatic resource management (RAII).
--   No owning raw pointers.
--   No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
+-   Follow the ]rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three), or rule of 5 in that order.
+-   Avoid owning raw pointers. [link](https://en.cppreference.com/w/cpp/memory)
+-   Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
     -   When working with Qt the use of the new keyword explicitly allowed.
--   Do not use C-style casts. [meme](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
--   Do not use `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`.
--   Make all destructors of classes used in runtime polymorphism virtual.
+-   Do not use [C-style casts](https://en.cppreference.com/w/cpp/language/explicit_cast). [meme](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
 -   Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
 -   Do not use protected member variables.
+-   Avoid `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`.
+-   Make all destructors of classes used in runtime polymorphism virtual.
 
 That's all folks! As you can see, C++ is easy ;) as long as you KISS.
-
 
 ## Oh wait, there is more!
 
