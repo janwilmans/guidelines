@@ -78,7 +78,7 @@ Generally, use the most fitting tool for the job, if it has less features, it al
 -   Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
 -   Use `const` and `nodiscard` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
 -   Use automatic resource management (RAII).
--   Follow the ]rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three), or rule of 5 in that order.
+-   Follow the [rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three) or the rule of 5 in that order.
 -   Avoid owning raw pointers. [link](https://en.cppreference.com/w/cpp/memory)
 -   Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
     -   When working with Qt the use of the new keyword explicitly allowed.
