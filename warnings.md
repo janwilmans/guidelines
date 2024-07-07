@@ -16,7 +16,7 @@ I have standard 'sets' of warnings I use for new projects, these are them.
 
 ## MSVC
 
-Just having /W3 is is really good start, but /W4 is ofcourse even better, certainly for new projects, see below for a more complete set.
+Just having /W3 is is really good start, but /W4 is of course even better, certainly for new projects, see below for a more complete set.
 
 ```
 /W4 
@@ -24,10 +24,10 @@ Just having /W3 is is really good start, but /W4 is ofcourse even better, certai
 
 I also use the defines: `NOMINMAX` and `WIN32_LEAN_AND_MEAN` for a little more standard compliance and less old headers included by default if you're going to include 'windows.h'.
 
-# More elabote sets
+# More elaborate sets
 
 There are also a couple of extra nice warnings you could add, I provide them here in CMAke syntax. I generally put this in a separate file 'CMakeLists.warnings.cmake', also include it for projects that I want to enforce these warnings on.
-However, I think the recommened CMake approach is actually to make a 'target' with these options 'public' and make your targets that want these options depend on it. So do want to will with that ;)
+However, I think the recommended CMake approach is actually to make a 'target' with these options 'public' and make your targets that want these options depend on it. So do want to will with that ;)
 You could look at the [DebugView++](https://github.com/CobaltFusion/DebugViewPP/blob/develop/CMakeLists.txt#L55) CMake setup as an example
 
 ## GCC and CLANG
