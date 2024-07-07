@@ -70,13 +70,12 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
 
 ## Files
 
-- Files should not exceed `500` lines. If exceeded: refactor.
+- Files should not exceed N lines. If exceeded: refactor. Consenses seems to indicate N should be somewhere between 500 and 2000. 
   - **Rationale**: Large files are an indication of poor decomposition and lack of decomposition makes the code harder to understand.
 - Put every class in its own file.
   - **Rationale**: helps to keep files smaller.
 - Use the `#pragma once` include guard in headers.
-  - **Rationale**: It does the job of protecting the header from multiple inclusion and although non-standard! it is widely supported.
-  - Note: be aware this offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files. (don't do that ;)
+  - **Rationale**: This is a bit contentious, because it is non-standard (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weights the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;)
 
 ## Rationales for the most basic guidelines:
 
@@ -147,8 +146,6 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1].
 - Do not rely on aggregate initialization for assigning default value to members, either create constructors or use in-class initialization.
   - **Rationale**: when initialization is part of the type, it makes it harder to use incorrectly.
-- Prefer member initializer lists over assignment in constructor body.
-  - **Rationale**: it's more efficient, it is construction instead construction followed by assignment.
 - Mark all destructors of classes in an inheritance hierarchy `virtual` or `override`.
   - **Rationale**: this prevents [subtle destruction bugs](https://cppcoach.godbolt.org/z/ebEPhzfbs).
 - Declare `public`, `protected` and `private` in that order.
@@ -157,8 +154,8 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
 - Make RAII class undiscardable using `[[nodiscard]]`
   - **Rationale**: this make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
-- Avoid assigning  members in the constructor body, use the member initializer list or in-class initialization.
-  - **Rationale**: makes the default constructor mandatory and forces [double initialization ](https://cppcoach.godbolt.org/z/87eWx351f)
+- Avoid assigning members in the constructor body, use the member initializer list or in-class initialization.
+  - **Rationale**: makes the default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f)
 
 ## Variables
 
