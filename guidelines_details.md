@@ -188,9 +188,10 @@ bool isInternetAvailable();
 ## Exceptions
 
 - Ensure exceptions thrown are handled on a higher level
-- Prefer exceptions on library boundaries for non-happy flow paths
+  - **Rationale**: Unhandled (uncaught) exceptions cause undefined behavior in C++, typically this will crash the program.
 - Prefer standard exception types over custom exceptions
-  - Convert 3rd party exceptions to standard exception types from the stl library
+  - Convert 3rd party exceptions that do not inherit from std::exception to exception that do.
+  - **Rationale**: There is no way for (higher level) functions to know what 3rd party exceptions to catch and if they are thrown and unhandled, the program will crash.
 
 ## Misc
 
@@ -220,8 +221,8 @@ bool isInternetAvailable();
 - Use `const std::filesystem::path& path` for strings that refer to file-like objects, such as devices or files.
   - **Rationale**: filesystem::path expresses intent, its `.c_str()` guarantees zero-termination and `path` comes with handy functions.
 - do not use exceptions for code-flow decisions aka. do not throw if you expect you will need to catch the exception as part of the
-  business logic of your application. Exceptions are for 'exceptional' cases, so only when continueing normal exection isn't possible.
-  - **Rationale**: using expections for business logic breaks the concept of local reasoning, you 'expect' certain callees to throw under certain conditions. Also stack-unwinding it not free in terms of performance; using exceptions for code-flow decisions leads to less readable, harder to maintain, and potentially less performant code
+  business logic of your application. Exceptions are for 'exceptional' cases, so only when continuing normal execution isn't possible.
+  - **Rationale**: using exceptions for business logic breaks the concept of local reasoning, you 'expect' certain callees to throw under certain conditions. Also stack-unwinding it not free in terms of performance; using exceptions for code-flow decisions leads to less readable, harder to maintain, and potentially less performant code
 - Avoid `requires requires`
   - **Rationale**: it is a shorthand for an in-place unnamed concept, give it a name.
 
@@ -233,8 +234,9 @@ bool isInternetAvailable();
 These discussion points lack proper guidance, if you have suggestions, please create an issue.
 
 - When is `std::optional` a good solution? A function that may or may not produce output? required checking the result on every call seems bad.
-  - **Rationale**: It explicitly communicates that the absence of a value is a valid state state should be checked agaist.
+  - **Rationale**: It explicitly communicates that the absence of a value is a valid state state should be checked against.
 
+- Prefer exceptions on library boundaries for non-happy flow paths, not sure about this, exceptions should't be used to control code flow.
 - When to use assertions and when to use exceptions?
 - use `noexcept` on function you know cannot throw an exception for performance, discuss how to deal with changing code over time.
 - use `constexpr` + `noexcept` on getters?

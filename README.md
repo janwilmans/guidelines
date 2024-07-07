@@ -1,12 +1,12 @@
-# C++ Clear Code Guidelines (CCCG) 
+# C++ Default Guidelines
 
-This is a C++ guidelines and good practices document by Jan Wilmans (c) 2023, aka the C++ Clear Code Guidelines (CCCG).
+This is a C++ guidelines and good practices document by Jan Wilmans (c) 2023, aka the C++ **Default** Guidelines.
 
 I collected these guidelines from 20 years of C++ experience and many teachings by others, honorable mentions go to [Scott Meyers](https://www.youtube.com/watch?v=wQxj20X-tIU), [Jason Turner](https://www.youtube.com/@cppweekly), [Klaus Iglberger](https://www.youtube.com/watch?v=PEcy1vYHb8A), [the Copperspice team](https://www.youtube.com/@CopperSpice), [Hana Dusíková](https://www.youtube.com/watch?v=C9MWAXYdFSY), Gert-Jan de Vos, [Anthony Williams](https://www.youtube.com/watch?v=JvHZ_OECOFU),  [STL (Stephan T. Lavavej)](https://www.youtube.com/watch?v=JhgWFYfdIho), [Peter Bindels](https://www.youtube.com/watch?v=4V9QWHjRPMc), [Sy Brand](https://www.youtube.com/watch?v=MZo7k_IOCe8) to name a few, probably I'm forgetting many others. 
 
 Most recently my colleagues [Adriaan de Groot](https://github.com/adriaandegroot/) and Stefan Spronkmans helped me to refine the guidelines and I owe them a big thank you!
 
-It is likely that some of the sources of what I describe here are found in any and all conference talks since CppCon 2017. As I have spend countless hours visiting conferences and poring over the many, many videos of the talks I did not physically attend.
+It is likely that the sources of what I describe here are found in any and all conference talks since CppCon 2017. As I have spend countless hours visiting conferences and poring over the many, many videos of the talks I did not physically attend.
 
 These guidelines are free to use by anyone, if you find them useful, I would appreciate your support through a [Ko-fi](https://ko-fi.com/janwilmans).
 
@@ -15,23 +15,23 @@ The guidelines are also mostly in line with Jason Turners's teachings on [C++ We
 
 # Brief
 
-My approach typically deviates from other sources through simplification. I try to offer guidance even when the answer is "it depends." My reasoning is that, while it does depend, having a go-to default is still valuable. The more we choose the defaults, the less surprising the code becomes.
+My approach typically deviates from other sources through simplification. I try to offer guidance even when the answer is "it depends." My reasoning is that, while it does depend, having a go-to default is valuable. The more we choose these defaults, the less surprising the code becomes.
 
-I also strive to keep it brief. Nobody wants to read a 200-page document before they start coding, and it's difficult to keep all of that in mind all the time. This is why I provide the 'Highest Level Summary' below and why there is some redundancy between this document and the 'detailed document'.
+I also strive to keep it brief. Nobody wants to read a 200-page document before they start coding, and it's difficult to keep all of that in mind all the time. This is why I provide the 'Highest Level Summary' below and why there is some redundancy between [this](README.md) document and the [detailed document](guidelines_details.md).
 
 # Guidelines
 
-These guidelines are just that, guidelines. They aren't rigid rules.
+These guidelines are just that, guidelines. They are not rules.
 
-To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg): "I kinda like having a fence, because it keeps me from falling into the river accidentally. It doesn't stop you from going in, if you want to go into the river, go into the river." I think this is a good way to think about these guidelines as well, use them as a default and if you go beyond them, tread carefully.
+The difference is, guidelines are suggestions that should be considered, but its ok to deviate from them. Rules imply more rigidity and should not be broken. (if you aim to follow good practices that is).
 
-This doesn't mean you should follow the guidelines mindlessly. Instead, think about the code, apply the defaults and and if they work well, don't complicate things further. Following the guidelines typically results in the least surprising code.
+To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg): "I kinda like having a fence, because it keeps me from falling into the river accidentally. It doesn't stop you from going in, if you want to go into the river, go into the river." I think this is a good way to think about guidelines as well, use them as a default and if you go beyond them, tread carefully.
 
-I find that the guidelines outlined here are reasonable default practices.
-The motto I recommend is: comply or explain. While it might sound harsh, it is just an easy to remember motto, do not take it as an order, just as a way to remember. It means if you choose a non-default solution and deviated from a guideline, you should be able to articulate why. Such instances may indicate particularly interesting code, could benefit from a comment explaining a 'why'. 
+This also means you should not follow guidelines mindlessly. Instead, think about the code, apply the defaults and if they work well, don't complicate things any further. Following these default guidelines typically results in the least surprising code.
 
-The goal isn't to use the guidelines as a strict "do this or else" directive but rather the other way around, guidelines should not be followed blindly!
-If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you 
+I find that the guidelines outlined here are reasonable default practices for many projects. The motto I recommend is: **comply or explain**. While it might sound harsh, it is just an easy to remember motto, do not take it as an order, just as a way to remember. It means if you choose a non-default solution and deviated from a guideline, you should be able to articulate why. Such instances may indicate particularly interesting code, that you could move into a separate function. Or could benefit from a comment explaining a 'why'.
+
+To re-affirm, do not to use these guidelines as a strict "do this or else" directive but rather the other way around, the guidelines should never be followed blindly! If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you 
 demonstrate you thought about it and came to the conclusion that something else was better. And THAT IS GREAT.
 
 # Guidelines vs. Style 
@@ -40,10 +40,6 @@ demonstrate you thought about it and came to the conclusion that something else 
 
 - With 'guidelines' I will almost always refer to structure, language constructs, they are opinionated on what is preferred and what is not.
 
-> The guidelines are usually good defaults, if you have no reason to deviate from them, apply them. 
-
-Why? because they are the least surprising thing to do.
-I am not claiming _these_ guidelines are the best guidelines ever. My recommendation is to take them, discuss them and form your own opinions.
 The real value is having a set of guidelines for your team or ideally, for your organization, so you have shared defaults and style.
 
 references:
@@ -51,7 +47,6 @@ references:
 - clang-format, https://clang.llvm.org/docs/ClangFormat.html 
 - editorconfig, https://editorconfig.org/ 
 
-I would like to include some suggestions to think about when choosing a style.
 The whitespace in the examples below is **arbitrary** but **consistent**. I recommend choosing a writing style and enforcing it using tools such as clang-format. 
 There is an example `.clang-format` file included in the repository which was used to format the examples. Also an .editorconfig file can be used to  give you and your colleagues consistent behavior over various environments and editors.
 
@@ -62,7 +57,7 @@ Suggestions for choosing a style:
 - Strive for consistency. Prefer simple rules like: 'all type names start with a capital letter' or all type names are 'snake_cased'.
 - Remember that almost all style choices will find resistance with _someone_.
 - Ultimately it is more important to have **one consistent style**, because that is what enhances **readability**, rather then **which style** is chosen.
-- Consider using nouns for class names and verbs for function names. Try to avoid abbreviations in names; they might make sense to you, but probably future readers (including yourself) might not understand or remember them.
+- Consider using nouns for class names and verbs for function names. Try to avoid abbreviations in names; they might make sense to you, but  future readers (including yourself) might not understand or remember them.
 
 ## Scope
 
