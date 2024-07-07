@@ -26,9 +26,9 @@ I also use the defines: `NOMINMAX` and `WIN32_LEAN_AND_MEAN` for a little more s
 
 # More elaborate sets
 
-There are also a couple of extra nice warnings you could add, I provide them here in CMAke syntax. I generally put this in a separate file 'CMakeLists.warnings.cmake', also include it for projects that I want to enforce these warnings on.
-However, I think the recommended CMake approach is actually to make a 'target' with these options 'public' and make your targets that want these options depend on it. So do want to will with that ;)
-You could look at the [DebugView++](https://github.com/CobaltFusion/DebugViewPP/blob/develop/CMakeLists.txt#L55) CMake setup as an example
+There are quite a few nice warnings you could add, I provide them here in CMAke syntax. I generally put this in a separate file 'CMakeLists.warnings.cmake' and include it top-level for projects that I want to enforce these warnings on.
+However, I think the recommended CMake approach is actually to make a 'target' with these options 'public' and make targets that want these options depend on it. So do want to will with that ;)
+You could look at the [DebugView++](https://github.com/CobaltFusion/DebugViewPP/blob/develop/CMakeLists.txt#L55) CMake setup as an example how to set that up.
 
 ## GCC and CLANG
 
