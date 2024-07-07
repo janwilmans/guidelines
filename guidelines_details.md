@@ -38,18 +38,19 @@ but this cost me several hours to make and the result is 288 lines of code. One 
 **FAIL EARLY**: Sometimes called 'guard clauses' or 'Return Early'. Detecting and handling errors as soon as they occur, but also exiting a function ASAP. This helps to reduce nested if-statement and improved readability.
 A function should deal with per-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reading can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow.
 
-**COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". Often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc)
+**COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". Often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc). Which by the way, doesn't mean I think you should remove them without changing the code ;)
 
 If you are breaking any of the guidelines or are doing something unexpected, if it fine to add a comment.
 Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
 
-These are examples of comments that are code smells, which doesn't mean I think you should remove them without changing the code ;)
-I think these comments are justified. I would not be happy to find the first 'make_example' and I would try to refactor to make sure we do not 'rely' on code with known UB. However, I think the 'isInternetAvailable()' is fine, the name of function explains what we are trying to accomplish and comment explains how and why the author wrote it this way.
+Here is an example of a comment that is a code smell. I think these comment is justified. However, I would not be happy to find this 'make_example' and I would refactor it to make sure we do not 'rely' on code with known UB. 
 
 ```
 // this has undefined behavior according to UBSAN, but I tested it, it works fine.
 void make_example();
 ```
+
+I think the comments on 'isInternetAvailable()' are good, the name of function explains what we are trying to accomplish and comment explains how and why the author wrote it this way.
 
 ```
 // this function ping's 8.8.8.8 because I don't know a better way to do an online check
@@ -57,7 +58,9 @@ void make_example();
 bool isInternetAvailable();
 ```
 
-**THE MOST FITTING TOOL**: With the most fitting tool I mean, if you have a choise between more generic solutions and more specific solutions the more specific solution is almost always less error-prone. An example of this is `std::lock_guard`, it cannot unlock early and it takes only one lockable object. While `std::scoped_lock` can lock multiple object at once and `std::unique_lock` can unlock early. If you do not require the latter features, prefer `std::lock_guard`, as it does not have extra features and thus is harder to use incorrectly.
+**THE MOST FITTING TOOL**: With the most fitting tool I mean, if you have a choice between more generic solutions and more specific solutions the more specific solution is almost always less error-prone. An example of this is `std::lock_guard`, it cannot unlock early and it takes only one lockable object. While `std::scoped_lock` can lock multiple object at once and `std::unique_lock` can unlock early. If you do not require the latter features, prefer `std::lock_guard`, as it does not have extra features and thus is harder to use incorrectly.
+
+Another example; `std::shared_ptr<T>` is very generic, objects of this type  can be copied and weak pointers can be created from it. In contrast `std::unique_ptr<T>` has a more specific use case, a limited set of features and is therefore less error-prone.
 
 </details>
 
@@ -83,8 +86,12 @@ bool isInternetAvailable();
   - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
 - Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
-- Use `const` and `nodiscard` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
-  - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. nodiscard is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where important values are inadvertently discarded. Avoiding const for member variables maintains consistency in class design and avoids potential complications with assignment operators.
+- Use `const` and `[[nodiscard]]` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
+  - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded. However, adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that const does not allow.
+-   Use automatic resource management (RAII).
+  - **Rationale**: Create a wrapper class for any resource that needs to be acquired and released. This prevents resource leaks, because on every exit-path, resources are automatically released by the RAII objects' destructor.
+ -  Follow the rule of 0 or the rule of 5 in that order.
+  - **Rationale**: the [rule of 0 and 5](https://en.cppreference.com/w/cpp/language/rule_of_three) are explained well on [cppreference.com](https://en.cppreference.com/w/cpp/language/rule_of_three)
 - No owning raw pointers.
   - **Rationale**: Owning raw pointers are prone to memory leaks and dangling pointers. Using smart pointers (std::unique_ptr, std::shared_ptr) provides automatic memory management, reducing the risk of such errors. Add remark on non-owning raw pointers
 - No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
@@ -92,7 +99,11 @@ bool isInternetAvailable();
   - **Rationale**: Manual memory management is error-prone and can lead to memory leaks, double deletions, and other issues. Qt and Copperspice have its own memory management mechanism, so new for those types of classes is actually not indicative of manual memory management.
 - Do not use C-style casts.
   - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (static_cast, dynamic_cast, const_cast, reinterpret_cast). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
-- Do not use `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`
+- Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
+  - **Rationale**: Interfaces (pure virtual classes) are meant to define a contract without imposing storage requirements. Adding member variables to such classes breaks this abstraction, leading to unnecessary overhead and potential misuse of the interface. Keeping interfaces pure enhances flexibility and decouples implementation details from the interface.
+- Do not use protected member variables
+  - **Rationale**: Protected member variables violate the encapsulation principle by exposing internal state to derived classes, which can lead to fragile and tightly coupled code. Instead, use protected methods to control access to the internal state, maintaining encapsulation while allowing controlled access when necessary.
+- Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`
   - **Rationale**:
     - `volatile`: Generally misunderstood and misused, leading to potential issues with optimization and undefined behavior. Modern concurrency mechanisms provide safer alternatives.
     - `const_cast`: Violates const-correctness, which can lead to undefined behavior.
@@ -103,10 +114,8 @@ bool isInternetAvailable();
     - `protected`: Breaks encapsulation to some extend because it allows derived classes to access internal state.
 - Make all destructors of classes used in runtime polymorphism virtual.
   - **Rationale**: Ensuring destructors are virtual in base classes used polymorphically prevents undefined behavior when derived class objects are deleted through base class pointers. This ensures that the correct destructor is called, which is crucial for proper resource cleanup in derived classes.
-- Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
-  - **Rationale**: Interfaces (pure virtual classes) are meant to define a contract without imposing storage requirements. Adding member variables to such classes breaks this abstraction, leading to unnecessary overhead and potential misuse of the interface. Keeping interfaces pure enhances flexibility and decouples implementation details from the interface.
-- Do not use protected member variables
-  - **Rationale**: Protected member variables violate the encapsulation principle by exposing internal state to derived classes, which can lead to fragile and tightly coupled code. Instead, use protected methods to control access to the internal state, maintaining encapsulation while allowing controlled access when necessary.
+- Avoid references as data members of a class
+  - **Rationale**: the reason the same as for 'avoid adding const to member variables', since re-assignment is not possible, the class would become **uncopyable** and **unmoveable** 
 
 ## Functions and lambdas
 

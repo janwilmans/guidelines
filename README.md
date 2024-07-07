@@ -80,8 +80,9 @@ Generally, use the most fitting tool for the job, if it has less features, it al
 -   Do not use [C-style casts](https://en.cppreference.com/w/cpp/language/explicit_cast). [meme](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
 -   Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
 -   Do not use protected member variables.
--   Avoid `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`.
+-   Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`.
 -   Make all destructors of classes used in runtime polymorphism virtual.
+-   Avoid references as data members of a class
 
 That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 
