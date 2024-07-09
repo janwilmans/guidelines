@@ -17,7 +17,7 @@ The guidelines are also mostly in line with Jason Turners's teachings on [C++ We
 
 My approach typically deviates from other sources through simplification. I try to offer guidance even when the answer is "it depends." My reasoning is that, while it does depend, having a go-to default is valuable. The more we choose these defaults, the less surprising the code becomes.
 
-I also strive to keep it brief. Nobody wants to read a 200-page document before they start coding, and it's difficult to keep all of that in mind all the time. This is why I provide the 'Highest Level Summary' below and why there is some redundancy between [this](README.md) document and the [detailed document](guidelines_details.md).
+I also strive to keep it brief. Nobody wants to read a 200-page document before they start coding, and it's difficult to keep all of that in mind all the time. This is why I provide the [Highest Level Summary](#highest-level-summary) below and why there is some redundancy between [this](README.md) document and the [detailed document](guidelines_details.md).
 
 # Guidelines
 

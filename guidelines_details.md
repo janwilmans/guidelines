@@ -1,12 +1,8 @@
 # More detailed guidelines
 
-I try to order each section's guidelines order of importance.
+I have ordered each section's guidelines in order of importance.
 
 > **"I didn’t have time to write you a short letter, so I wrote you a long one.” -- Mark Twain**
-
-Simplifications; sometimes a rationale might sounds like: 'Just don't do that', in these cases I do not mean to be cheeky. I mean
-try to avoid or remove those cases if you have them, because I could not come up with a good guideline to deal with those situations.
-If you have ideas for improvement in this regard, feel free to leave me a note.
 
 <details><summary>Mottos</summary>
 
@@ -35,12 +31,12 @@ but this cost me several hours to make and the result is 288 lines of code. One 
 
 **DRY: DON'T REPEAT YOURSELF**: I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document, some redundancy hopefully makes this document more understandable even if you just read one section. In software engineering the DRY principle refers to not repeating similar but functionally identical things in multiple places. Do not copy-paste code, just to modify it slightly, instead write re-usable code.
 
-**FAIL EARLY**: Sometimes called 'guard clauses' or 'Return Early'. Detecting and handling errors as soon as they occur, but also exiting a function ASAP. This helps to reduce nested if-statement and improved readability.
-A function should deal with per-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reading can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow.
+**FAIL EARLY**: Sometimes called 'Guard Clauses' or 'Return Early Pattern'. Detecting and handling errors as soon as they occur, but also exiting a function ASAP. This helps to reduce nested if-statement and improved readability.
+A function should deal with pre-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reader can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow.
 
-**COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". Often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc). Which by the way, doesn't mean I think you should remove them without changing the code ;)
+**COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". However, often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc). Which by the way, doesn't mean you should remove them without changing the code.
 
-If you are breaking any of the guidelines or are doing something unexpected, if it fine to add a comment.
+If you are breaking any of the guidelines or are doing something unexpected, it is good separate that code into a function, let the name explain **what** it is doing and add a comment to explain **why**.
 Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
 
 Here is an example of a comment that is a code smell. I think these comment is justified. However, I would not be happy to find this 'make_example' and I would refactor it to make sure we do not 'rely' on code with known UB. 
