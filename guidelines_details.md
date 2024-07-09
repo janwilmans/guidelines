@@ -73,34 +73,36 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
 - Use the `#pragma once` include guard in headers.
   - **Rationale**: This is a bit contentious, because it is non-standard (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weights the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;)
 
-## Rationales for the most basic guidelines:
+## Rationales for the high level guidelines:
 
-- Turn on warnings!
+- [HL.1] Turn on warnings! and use sanitizers.
   - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using warnings as errors further enforces code quality by making sure these issues are addressed.
-- Keep scope as limited as possible.
+- [HL.2] Keep scope as limited as possible.
   - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
-- Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
+- [HL.3] Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
-- Use `const` and `[[nodiscard]]` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
+- [HL.4] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
   - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded. However, adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that const does not allow.
-- Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
+- [HL.5] Use `[[nodiscard]]` for all `const` member functions returning a value
+  - **Rationale**: const function can't modify state, so the only reason to call them is to get the return value
+- [HL.6] Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
   - **Rationale**: breaks local reasoning for the caller, making reading and understanding the code harder.
-- Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
-  - **Rationale**: Create a wrapper class for any resource that needs to be acquired and released. This prevents resource leaks, because on every exit-path, resources are automatically released by the RAII objects' destructor.
- -  Follow the rule of 0 or the rule of 5 in that order.
-  - **Rationale**: the [rule of 0 and 5](https://en.cppreference.com/w/cpp/language/rule_of_three) are explained well on [cppreference.com](https://en.cppreference.com/w/cpp/language/rule_of_three)
-- No owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [link](https://en.cppreference.com/w/cpp/memory) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed)
+- [HL.7] Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
+    - **Rationale**: Create a wrapper class for any resource that needs to be acquired and released. This prevents resource leaks, because on every exit-path, resources are automatically released by the RAII objects' destructor.
+ - [HL.8] Follow the rule of 0 or the rule of 5 in that order.
+   - **Rationale**: the [rule of 0 and 5](https://en.cppreference.com/w/cpp/language/rule_of_three) are explained well on [cppreference.com](https://en.cppreference.com/w/cpp/language/rule_of_three)
+- [HL.9] No owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [link](https://en.cppreference.com/w/cpp/memory) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed)
   - **Rationale**: Owning raw pointers are prone to memory leaks and dangling pointers. Using smart pointers (std::unique_ptr, std::shared_ptr) provides automatic memory management, reducing the risk of such errors. Add remark on non-owning raw pointers
-- No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
+- [HL.10] No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
   - When working with Qt or [Copperspice](www.copperspice.com) the use of the new keyword explicitly allowed.
   - **Rationale**: Manual memory management is error-prone and can lead to memory leaks, double deletions, and other issues. Qt and Copperspice have its own memory management mechanism, so new for those types of classes is actually not indicative of manual memory management.
-- Do not use C-style casts.
+- [HL.11] Do not use C-style casts.
   - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (`static_cast`, `dynamic_cast`, `const_cast`, `reinterpret_cast`). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
-- Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
+- [HL.12] Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
   - **Rationale**: Interfaces (pure virtual classes) are meant to define a contract without imposing storage requirements. Adding member variables to such classes breaks this abstraction, leading to unnecessary overhead and potential misuse of the interface. Keeping interfaces pure enhances flexibility and decouples implementation details from the interface.
-- Do not use protected member variables
+- [HL.13] Do not use protected member variables
   - **Rationale**: Protected member variables violate the encapsulation principle by exposing internal state to derived classes, which can lead to fragile and tightly coupled code. Instead, use protected methods to control access to the internal state, maintaining encapsulation while allowing controlled access when necessary.
-- Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
+- [HL.14] Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
   - **Rationale**:
     - `volatile`: Generally misunderstood and misused, leading to potential issues with optimization and undefined behavior. Modern concurrency mechanisms provide safer alternatives.
     - `const_cast`: Violates const-correctness, which can lead to undefined behavior. Should only be used for calling legacy C functions.
@@ -110,9 +112,9 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
     - `extern`: Encourages global state, which is generally bad practice as it can lead to code that is difficult to understand and maintain.
     - `protected`: Breaks encapsulation to some extend because it allows derived classes to access internal state.
     - `va_arg`: Passing to va_args assumes the correct type will be read. This is fragile because it cannot generally be enforced to be safe [[F.55]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f55-dont-use-va_arg-arguments)
-- Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
+- [HL.15] Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
   - **Rationale**: Ensuring destructors are virtual in base classes used polymorphically prevents undefined behavior when derived class objects are deleted through base class pointers. This ensures that the correct destructor is called, which is crucial for proper resource cleanup in derived classes.
-- Avoid references as data members of a class
+- [HL.16] Avoid references as data members of a class
   - **Rationale**: the reason the same as for 'avoid adding const to member variables', since re-assignment is not possible, the class would become **uncopyable** and **unmoveable** 
 
 ## Functions and lambdas

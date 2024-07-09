@@ -1,6 +1,10 @@
 # C++ Default Guidelines
 
-This is a C++ guidelines and good practices document by Jan Wilmans (c) 2023, aka the C++ **Default** Guidelines.
+This is a C++ guidelines and good practices document by Jan Wilmans (c) 2023
+
+The main purpose for this set of guidelines is to serve as a starting point for people that are new to the language or learners seeking to improve their C++ writing quality.
+
+It can also be used as a starting point for making your own guidelines for a project.
 
 I collected these guidelines from 20 years of C++ experience and many teachings by others, honorable mentions go to [Scott Meyers](https://www.youtube.com/watch?v=wQxj20X-tIU), [Jason Turner](https://www.youtube.com/@cppweekly), [Klaus Iglberger](https://www.youtube.com/watch?v=PEcy1vYHb8A), [the Copperspice team](https://www.youtube.com/@CopperSpice), [Hana Dusíková](https://www.youtube.com/watch?v=C9MWAXYdFSY), Gert-Jan de Vos, [Anthony Williams](https://www.youtube.com/watch?v=JvHZ_OECOFU),  [STL (Stephan T. Lavavej)](https://www.youtube.com/watch?v=JhgWFYfdIho), [Peter Bindels](https://www.youtube.com/watch?v=4V9QWHjRPMc), [Sy Brand](https://www.youtube.com/watch?v=MZo7k_IOCe8) to name a few, probably I'm forgetting many others. 
 
@@ -27,7 +31,7 @@ The difference is, guidelines are suggestions that should be considered, but its
 
 To express this in the words of [Kate Gregory ](https://www.youtube.com/watch?v=MBRoCdtZOYg): "I kinda like having a fence, because it keeps me from falling into the river accidentally. It doesn't stop you from going in, if you want to go into the river, go into the river." I think this is a good way to think about guidelines as well, use them as a default and if you go beyond them, tread carefully.
 
-This also means you should not follow guidelines mindlessly. Instead, think about the code, apply the defaults and if they work well, don't complicate things any further. Following these default guidelines typically results in the least surprising code.
+I should also mention you should not follow guidelines mindlessly. Instead, think about the code, apply the defaults and if they work well, don't complicate things any further. Following these default guidelines typically results in the least surprising code.
 
 I find that the guidelines outlined here are reasonable default practices for many projects. The motto I recommend is: **comply or explain**. While it might sound harsh, it is just an easy to remember motto, do not take it as an order, just as a way to remember. It means if you choose a non-default solution and deviated from a guideline, you should be able to articulate why. Such instances may indicate particularly interesting code, that you could move into a separate function. Or could benefit from a comment explaining a 'why'.
 
@@ -68,24 +72,24 @@ Suggestions for choosing a style:
 
 Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
 
--   Turn on warnings! and use sanitizers [[P.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p12-use-supporting-tools-as-appropriate) (see [details](warnings.md) here)
--   Avoid global mutable state [[I.2]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-global) [[I.3]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton)
--   Keep the scope of variables and type declarations as limited as possible. [examples](examples.md#keep-scope-as-limited-as-possible)
--   Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
--   Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)).  [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
--   Use `[[nodiscard]]` for all `const` member functions returning a value
--   Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
--   Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
--   Follow the [rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three) or the rule of 5 in that order.
--   Avoid owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed) [[doc]](https://en.cppreference.com/w/cpp/memory)
--   Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
+-   [HL.1] Turn on warnings! and use sanitizers [[P.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p12-use-supporting-tools-as-appropriate) (see [details](warnings.md) here)
+-   [HL.2] Avoid global mutable state [[I.2]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-global) [[I.3]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton)
+-   [HL.3] Keep the scope of variables and type declarations as limited as possible. [examples](examples.md#keep-scope-as-limited-as-possible)
+-   [HL.4] Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
+-   [HL.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)).  [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
+-   [HL.6] Use `[[nodiscard]]` for all `const` member functions returning a value
+-   [HL.7] Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
+-   [HL.8] Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
+-   [HL.8] Follow the [rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three) or the rule of 5 in that order.
+-   [HL.9] Avoid owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed) [[doc]](https://en.cppreference.com/w/cpp/memory)
+-   [HL.10] Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
     -   When working with Qt the use of the new keyword explicitly allowed.
--   Do not use [C-style casts](https://en.cppreference.com/w/cpp/language/explicit_cast). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
--   Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
--   Do not use protected member variables.
--   Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
--   Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
--   Avoid references as data members of a class
+-   [HL.11] Do not use [C-style casts](https://en.cppreference.com/w/cpp/language/explicit_cast). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
+-   [HL.12] Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
+-   [HL.13] Do not use protected member variables.
+-   [HL.14] Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
+-   [HL.15] Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
+-   [HL.16] Avoid references as data members of a class
 
 That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 
