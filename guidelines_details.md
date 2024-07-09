@@ -83,7 +83,9 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
 - Use `const` and `[[nodiscard]]` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
   - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded. However, adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that const does not allow.
--   Use automatic resource management (RAII).
+- Avoid returning values using arguments.
+  - **Rationale**: breaks local reasoning for the caller, making reading and understanding the code harder.
+- Use automatic resource management (RAII).
   - **Rationale**: Create a wrapper class for any resource that needs to be acquired and released. This prevents resource leaks, because on every exit-path, resources are automatically released by the RAII objects' destructor.
  -  Follow the rule of 0 or the rule of 5 in that order.
   - **Rationale**: the [rule of 0 and 5](https://en.cppreference.com/w/cpp/language/rule_of_three) are explained well on [cppreference.com](https://en.cppreference.com/w/cpp/language/rule_of_three)
