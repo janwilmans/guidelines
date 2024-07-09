@@ -103,7 +103,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
 - Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
   - **Rationale**:
     - `volatile`: Generally misunderstood and misused, leading to potential issues with optimization and undefined behavior. Modern concurrency mechanisms provide safer alternatives.
-    - `const_cast`: Violates const-correctness, which can lead to undefined behavior.
+    - `const_cast`: Violates const-correctness, which can lead to undefined behavior. Should only be used for calling legacy C functions.
     - `reinterpret_cast`: Potentially dangerous because it can cast any pointer type to any other pointer type, leading to type safety violations and undefined behavior.
     - `typedef`: Superseded by using, which is more powerful and consistent with other type alias features in C++11 and later.
     - `register`: Deprecated and ignored by modern compilers, making it obsolete.
