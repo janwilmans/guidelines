@@ -13,7 +13,7 @@ These are the mottos I find useful, some of them I learned from Gert-Jan de Vos 
 
 - KISS (Keep It Simple Stupid) followed by YAGNI (You Ain't Gonna Need It)
 - DRY (Don't repeat yourself)
-- Fail Early, use Guard Clauses (Check pre-conditions in a function and bail asap)
+- Fail Early, use Guard Clauses (Check pre-conditions in a function and bail asap) [[P.7]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p7-catch-run-time-errors-early)
 - Design for debugging is a self-fulfilling prophesy
 - More explicit code is better code
 - Create a Pit of Success (Make interfaces and types hard to use incorrectly)
@@ -25,7 +25,7 @@ These are the mottos I find useful, some of them I learned from Gert-Jan de Vos 
 **KISS** is perhaps the most difficult of all guidelines to describe and execute. Writing a simple (maybe elegant or short are also attributes) solution to a complicated problem or even not-writing a complicated solution to not-so difficult problem can sometimes be very hard.
 Rabbit holes and pitfalls are omnipresent in practice and side-stepping them and keeping things simple is a true art.
 As an example, I recently implemented a [ICMP PING function](https://github.com/janwilmans/explain_icmp_ping), to make an 'is the internet available' function,
-but this cost me several hours to make and the result is 288 lines of code. One alternative could have been to run `system("ping -W1 -c1 8.8.8.8")` and check if the return is 0. Which of these solutions is appropriate depends entirely on the use case. Also the level of control you have over the process is wildly different.
+but this cost me several hours to make and the result is 288 lines of code. One alternative could have been to run `system("ping -W1 -c1 8.8.8.8")` and check if the return is 0. Which of these solutions is appropriate depends entirely on the use case. Also the level of control you have over the process is wildly different. [[F.2]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f2-a-function-should-perform-a-single-logical-operation) [[F.3]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f3-keep-functions-short-and-simple) [[F.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f8-prefer-pure-functions)
 
 **YAGNI** is about choosing wisely and timely. You could just use a system-based ping first, until it turns out that is not good enough and you really need more control over, let's say, the timeout. Only then you spend more time to implement a more complex solution. Programmers have a tendency to think they know what they or users are going to need in the future. YAGNI says: good, keep that in mind, but do not implement anything you do not need right now.
 
@@ -36,7 +36,7 @@ A function should deal with pre-condition checks first. [example](https://cppcoa
 
 **COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". However, often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc). Which by the way, doesn't mean you should remove them without changing the code.
 
-If you are breaking any of the guidelines or are doing something unexpected, it is good separate that code into a function, let the name explain **what** it is doing and add a comment to explain **why**.
+If you are breaking any of the guidelines or are doing something unexpected, it is good separate that code into a function, let the name explain **what** it is doing and add a comment to explain **why**. [[I.30]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#i30-encapsulate-rule-violations)
 Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
 
 Here is an example of a comment that is a code smell. I think these comment is justified. However, I would not be happy to find this 'make_example' and I would refactor it to make sure we do not 'rely' on code with known UB. 
@@ -66,7 +66,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
 
 ## Files
 
-- Files should not exceed N lines. If exceeded: refactor. Consenses seems to indicate N should be somewhere between 500 and 2000. 
+- Files should not exceed 2000 lines. If exceeded: refactor. 
   - **Rationale**: Large files are an indication of poor decomposition and lack of decomposition makes the code harder to understand.
 - Put every class in its own file.
   - **Rationale**: helps to keep files smaller.
@@ -79,28 +79,28 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using warnings as errors further enforces code quality by making sure these issues are addressed.
 - Keep scope as limited as possible.
   - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
-- Initialize all variables at declaration. [meme](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
+- Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
-- Use `const` and `[[nodiscard]]` whenever you can (but no const for member variables). [meme](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
+- Use `const` and `[[nodiscard]]` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
   - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded. However, adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that const does not allow.
-- Avoid returning values using arguments.
+- Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
   - **Rationale**: breaks local reasoning for the caller, making reading and understanding the code harder.
-- Use automatic resource management (RAII).
+- Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
   - **Rationale**: Create a wrapper class for any resource that needs to be acquired and released. This prevents resource leaks, because on every exit-path, resources are automatically released by the RAII objects' destructor.
  -  Follow the rule of 0 or the rule of 5 in that order.
   - **Rationale**: the [rule of 0 and 5](https://en.cppreference.com/w/cpp/language/rule_of_three) are explained well on [cppreference.com](https://en.cppreference.com/w/cpp/language/rule_of_three)
-- No owning raw pointers.
+- No owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [link](https://en.cppreference.com/w/cpp/memory) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed)
   - **Rationale**: Owning raw pointers are prone to memory leaks and dangling pointers. Using smart pointers (std::unique_ptr, std::shared_ptr) provides automatic memory management, reducing the risk of such errors. Add remark on non-owning raw pointers
 - No manual memory management using `new`, `delete`, `malloc`, `free`, etc.
   - When working with Qt or [Copperspice](www.copperspice.com) the use of the new keyword explicitly allowed.
   - **Rationale**: Manual memory management is error-prone and can lead to memory leaks, double deletions, and other issues. Qt and Copperspice have its own memory management mechanism, so new for those types of classes is actually not indicative of manual memory management.
 - Do not use C-style casts.
-  - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (static_cast, dynamic_cast, const_cast, reinterpret_cast). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
+  - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (`static_cast`, `dynamic_cast`, `const_cast`, `reinterpret_cast`). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
 - Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
   - **Rationale**: Interfaces (pure virtual classes) are meant to define a contract without imposing storage requirements. Adding member variables to such classes breaks this abstraction, leading to unnecessary overhead and potential misuse of the interface. Keeping interfaces pure enhances flexibility and decouples implementation details from the interface.
 - Do not use protected member variables
   - **Rationale**: Protected member variables violate the encapsulation principle by exposing internal state to derived classes, which can lead to fragile and tightly coupled code. Instead, use protected methods to control access to the internal state, maintaining encapsulation while allowing controlled access when necessary.
-- Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern` or `protected`
+- Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
   - **Rationale**:
     - `volatile`: Generally misunderstood and misused, leading to potential issues with optimization and undefined behavior. Modern concurrency mechanisms provide safer alternatives.
     - `const_cast`: Violates const-correctness, which can lead to undefined behavior.
@@ -109,7 +109,8 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
     - `register`: Deprecated and ignored by modern compilers, making it obsolete.
     - `extern`: Encourages global state, which is generally bad practice as it can lead to code that is difficult to understand and maintain.
     - `protected`: Breaks encapsulation to some extend because it allows derived classes to access internal state.
-- Make all destructors of classes used in runtime polymorphism virtual.
+    - `va_arg`: Passing to va_args assumes the correct type will be read. This is fragile because it cannot generally be enforced to be safe [[F.55]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f55-dont-use-va_arg-arguments)
+- Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
   - **Rationale**: Ensuring destructors are virtual in base classes used polymorphically prevents undefined behavior when derived class objects are deleted through base class pointers. This ensures that the correct destructor is called, which is crucial for proper resource cleanup in derived classes.
 - Avoid references as data members of a class
   - **Rationale**: the reason the same as for 'avoid adding const to member variables', since re-assignment is not possible, the class would become **uncopyable** and **unmoveable** 
@@ -123,7 +124,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: helps with local reasoning about object lifetime, reduces lifetime dependencies.
 - Keep functions limited to 42 lines. If a function exceeds this limit, refactor it while balancing the need for concise code and keeping related logic together.
   - **Rationale**: helps with (local) reasoning about the code, encourages decomposition
-- Functions and lambdas should not have more than `3` arguments.
+- Functions and lambdas should not have more than `3` arguments. [[I.23]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#i23-keep-the-number-of-function-arguments-low)
   - **Rationale**: this arbitrary limit encourages the author to consider if the function could/should not be split into multiple functions.
 - Explicitly capture variables in lambdas.
   - **Rationale**: explicit capturing expresses intent, avoids capturing 'this' by accident.
@@ -142,9 +143,9 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: to prevent implicit conversions and make the construction visible at the call site.
 - Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables.
   - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1].
-- Do not rely on aggregate initialization for assigning default value to members, either create constructors or use in-class initialization.
-  - **Rationale**: when initialization is part of the type, it makes it harder to use incorrectly.
-- Mark all destructors of classes in an inheritance hierarchy `virtual` or `override`.
+- Use in-class initialization or in initializer lists to initialize all members [[C.41]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c41-a-constructor-should-create-a-fully-initialized-object) [[C.43]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c43-ensure-that-a-copyable-class-has-a-default-constructor) [[C.45]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c45-dont-define-a-default-constructor-that-only-initializes-data-members-use-default-member-initializers-instead)
+  - **Rationale**: when full initialization is part of the type, it makes it harder to use incorrectly. 
+- Mark all destructors of classes in an inheritance hierarchy `virtual` or `override`. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
   - **Rationale**: this prevents [subtle destruction bugs](https://cppcoach.godbolt.org/z/ebEPhzfbs).
 - Declare `public`, `protected` and `private` in that order.
   - **Rationale**: consistent style improves readability
@@ -154,6 +155,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: this make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
 - Avoid assigning members in the constructor body, use the member initializer list or in-class initialization.
   - **Rationale**: makes the default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f)
+- mark all constructors with a single argument `explicit` [[C.46]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c46-by-default-declare-single-argument-constructors-explicit) [[C.48]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers) [[C.49]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c49-prefer-initialization-to-assignment-in-constructors)
 
 ## Variables
 
@@ -203,7 +205,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
   - **Rationale**: Arranging data members from largest to smallest size can reduce memory padding aka alignment overhead. 
 - Put switch statements in a separate function where each case only returns immediately. [example](https://cppcoach.godbolt.org/z/hca48Gjnq)
   - **Rationale**: Isolating switch statements into separate functions and having each case return immediately simplifies the logic, making the code more readable and maintainable. 
-- Do not use more than `2` nested levels of conditional statements. If exceeded: refactor.
+- Do not use more than `2` nested levels of conditional statements. If exceeded: refactor. [[F.56]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f56-avoid-unnecessary-condition-nesting)
   - **Rationale**: By limiting nesting to two levels, the code remains more straightforward and easier to follow. If more nesting is needed, it typically indicates that the function is doing too much and should be refactored into smaller, more manageable pieces.
 - Prefer `nullptr` over `0` or `NULL`.
   - **Rationale**: `nullptr`` does not implicitly convert to non-pointers
@@ -241,7 +243,7 @@ These discussion points lack proper guidance, if you have suggestions, please cr
   - **Rationale**: It explicitly communicates that the absence of a value is a valid state state should be checked against.
 
 - Prefer exceptions on library boundaries for non-happy flow paths, not sure about this, exceptions should't be used to control code flow.
-- When to use assertions and when to use exceptions?
+- When to use assertions and when to use exceptions? [[I.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#i10-use-exceptions-to-signal-a-failure-to-perform-a-required-task)
 - use `noexcept` on function you know cannot throw an exception for performance, discuss how to deal with changing code over time.
 - use `constexpr` + `noexcept` on getters?
 - start by making every function constexpr and only take it away only when needed?
@@ -321,3 +323,9 @@ I put the 'offending' code in a `details` namespace, so it is clear that part is
 [log_debug() code](https://cppcoach.godbolt.org/z/7za8ccPxx)
 
 [^1]: Violation of Interface Segregation Principle (ISP): The Interface Segregation Principle states that a class should not be forced to implement interfaces it does not use. If an interface contains member variables that are not relevant to a particular class, it violates ISP
+
+# work in progress:
+
+The C++ core guideline references have been added up to:
+
+* https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#ccon-containers-and-other-resource-handles
