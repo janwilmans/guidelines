@@ -244,12 +244,13 @@ These discussion points lack proper guidance, if you have suggestions, please cr
 
 - When is `std::optional` a good solution? A function that may or may not produce output? required checking the result on every call seems bad.
   - **Rationale**: It explicitly communicates that the absence of a value is a valid state state should be checked against.
-
 - Prefer exceptions on library boundaries for non-happy flow paths, not sure about this, exceptions should't be used to control code flow.
 - When to use assertions and when to use exceptions? [[I.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#i10-use-exceptions-to-signal-a-failure-to-perform-a-required-task)
+  - discussion: the question comes down to: when you want a debug version of a program to terminate if the assertion fails, what would you do in the release version? do you use assertions for documenting assumptions/invariants? you still have to do _something_ in the release configuration?!
+  - this reasoning suggests maybe your would be better of with a custom ASSERT_MACRO that always terminates, also in release configuration, that way it is more likely to be found during testing?
 - use `noexcept` on function you know cannot throw an exception for performance, discuss how to deal with changing code over time.
 - use `constexpr` + `noexcept` on getters?
-- start by making every function constexpr and only take it away only when needed?
+- start by making every function `constexpr` and only take it away only when needed?
 - Delete reference qualified overloads of getters that return references or reference types. experimental: 
   - https://cppcoach.godbolt.org/z/eszM1esas
 
