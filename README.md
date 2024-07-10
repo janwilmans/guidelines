@@ -72,24 +72,24 @@ Suggestions for choosing a style:
 
 Generally, use the most fitting tool for the job, if it has less features, it allows for less mistakes.
 
--   [HL.1] Turn on warnings! and use sanitizers [[P.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p12-use-supporting-tools-as-appropriate) (see [details](warnings.md) here)
--   [HL.2] Avoid global mutable state [[I.2]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-global) [[I.3]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton)
--   [HL.3] Keep the scope of variables and type declarations as limited as possible. [examples](examples.md#keep-scope-as-limited-as-possible)
--   [HL.4] Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
--   [HL.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)).  [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
--   [HL.6] Use `[[nodiscard]]` for all `const` member functions returning a value
--   [HL.7] Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
--   [HL.8] Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
--   [HL.8] Follow the [rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three) or the rule of 5 in that order.
--   [HL.9] Avoid owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed) [[doc]](https://en.cppreference.com/w/cpp/memory)
--   [HL.10] Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
-    -   When working with Qt the use of the new keyword explicitly allowed.
--   [HL.11] Do not use [C-style casts](https://en.cppreference.com/w/cpp/language/explicit_cast). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
--   [HL.12] Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
--   [HL.13] Do not use protected member variables.
--   [HL.14] Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
--   [HL.15] Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
--   [HL.16] Avoid references as data members of a class
+- [H.1] Turn on warnings! and use sanitizers [[P.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p12-use-supporting-tools-as-appropriate) (see [details](warnings.md) here)
+- [H.2] Avoid global mutable state [[I.2]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-global) [[I.3]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton)
+- [H.3] Keep the scope of variables and type declarations as limited as possible. [examples](examples.md#keep-scope-as-limited-as-possible)
+- [H.4] Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
+- [H.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)).  [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
+- [H.6] Use `[[nodiscard]]` for all `const` member functions returning a value.
+- [H.7] Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
+- [H.8] Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
+- [H.9] Follow the [rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three) or the rule of 5 in that order.
+- [H.10] Avoid owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed) [[doc]](https://en.cppreference.com/w/cpp/memory)
+- [H.11] Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
+    - When working with Qt the use of the new keyword explicitly allowed.
+- [H.12] Do not use [C-style casts](https://en.cppreference.com/w/cpp/language/explicit_cast). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
+- [H.13] Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
+- [H.14] Do not use protected member variables.
+- [H.15] Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
+- [H.16] Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
+- [H.17] Avoid references as data members of a class
 
 That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 
