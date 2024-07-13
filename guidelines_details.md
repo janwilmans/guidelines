@@ -32,14 +32,14 @@ but this cost me several hours to make and the result is 288 lines of code. One 
 **DRY: DON'T REPEAT YOURSELF**: I realize the 'Don't repeat yourself' is ironic because I repeat some things in this document in multiple places, however writing documents is unlike writing code. The compiler reads all the code at once, but I do not expect the same from humans that read this document, some redundancy hopefully makes this document more understandable even if you just read one section. In software engineering the DRY principle refers to not repeating similar but functionally identical things in multiple places. Do not copy-paste code, just to modify it slightly, instead write re-usable code.
 
 **FAIL EARLY**: Sometimes called 'Guard Clauses' or 'Return Early Pattern'. Detecting and handling errors as soon as they occur, but also exiting a function ASAP. This helps to reduce nested if-statement and improved readability.
-A function should deal with pre-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reader can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow.
+A function should deal with pre-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reader can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow. There is also the another reason to report errors as soon as they can be detected: letting a program continue in an erroneous state makes it harder and harder to find the root cause when you have to trace it back.
 
 **COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". However, often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc). Which by the way, doesn't mean you should remove them without changing the code.
 
 If you are breaking any of the guidelines or are doing something unexpected, it is good separate that code into a function, let the name explain **what** it is doing and add a comment to explain **why**. [[I.30]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#i30-encapsulate-rule-violations)
 Comments should explain WHY/HOW the code is doing something, try to cover the WHAT in the name of the class, function or lambda.
 
-Here is an example of a comment that is a code smell. I think these comment is justified. However, I would not be happy to find this 'make_example' and I would refactor it to make sure we do not 'rely' on code with known UB. 
+Here is an example of a comment that is a code smell. Also I think the comment is justified. However, I would not be happy to find this 'make_example' and I would refactor it to make sure we do not 'rely' on code with known UB. 
 
 ```
 // this has undefined behavior according to UBSAN, but I tested it, it works fine.
@@ -56,7 +56,7 @@ bool isInternetAvailable();
 
 **THE MOST FITTING TOOL**: With the most fitting tool I mean, if you have a choice between more generic solutions and more specific solutions the more specific solution is almost always less error-prone. An example of this is `std::lock_guard`, it cannot unlock early and it takes only one lockable object. While `std::scoped_lock` can lock multiple object at once and `std::unique_lock` can unlock early. If you do not require the latter features, prefer `std::lock_guard`, as it does not have extra features and thus is harder to use incorrectly.
 
-Another example; `std::shared_ptr<T>` is very generic, objects of this type  can be copied and weak pointers can be created from it. In contrast `std::unique_ptr<T>` has a more specific use case, a limited set of features and is therefore less error-prone.
+Another example; `std::shared_ptr<T>` is very generic, objects of this type can be copied and weak pointers can be created from it. In contrast `std::unique_ptr<T>` has a more specific use case, a limited set of features and is therefore less error-prone.
 
 </details>
 
@@ -71,18 +71,18 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type  can
 - Put every class in its own file.
   - **Rationale**: helps to keep files smaller.
 - Use the `#pragma once` include guard in headers.
-  - **Rationale**: This is a bit contentious, because it is non-standard (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weights the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;)
+  - **Rationale**: This is a bit contentious, because it is non-standard (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weighs the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;)
 
 ## Rationales for the high level guidelines:
 
 - [H.1] Turn on warnings and use sanitizers! [[P.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.
-  - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using warnings as errors further enforces code quality by making sure these issues are addressed.
+  - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using [warnings](warnings.md) as errors using (-Werror) further enforces code quality by making sure these issues are addressed. Sanitizers can catch runtime errors such as out-of-bounds access or using values from uninitialized variables. Sanitizers are compiler features that will emit extra checking-code into your program, they can be turned on using `-fsanitize=address,undefined` or -fsanitize=thread`. Note that the thread sanitizer cannot be combined with other sanitizers.
 - [H.2] Avoid global mutable state [[I.2]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-global) [[I.3]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton)
 - [H.3] Keep the scope of variables and type declarations as limited as possible. [examples](examples.md#keep-scope-as-limited-as-possible)
   - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
 - [H.4] Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
-- [H.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881)
+- [H.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881) [[example]](https://www.youtube.com/watch?v=KBny6MZJR64)
   - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded. However, adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that const does not allow.
 - [H.6] Use `[[nodiscard]]` for all `const` member functions returning a value.
   - **Rationale**: const function can't modify state, so the only reason to call them is to get the return value
