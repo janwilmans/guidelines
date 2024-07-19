@@ -14,6 +14,7 @@ These are the mottos I find useful, some of them I learned from Gert-Jan de Vos 
 - KISS (Keep It Simple Stupid) followed by YAGNI (You Ain't Gonna Need It)
 - DRY (Don't repeat yourself)
 - Fail Early, use Guard Clauses (Check pre-conditions in a function and bail asap) [[P.7]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p7-catch-run-time-errors-early)
+- Do not throw to catch 
 - Design for debugging is a self-fulfilling prophesy
 - More explicit code is better code
 - Create a Pit of Success (Make interfaces and types hard to use incorrectly)
@@ -33,6 +34,8 @@ but this cost me several hours to make and the result is 288 lines of code. One 
 
 **FAIL EARLY**: Sometimes called 'Guard Clauses' or 'Return Early Pattern'. Detecting and handling errors as soon as they occur, but also exiting a function ASAP. This helps to reduce nested if-statement and improved readability.
 A function should deal with pre-condition checks first. [example](https://cppcoach.godbolt.org/z/s6dY7sxY3) here to understand "what the function" does, the reader can focus on just lines 33-38. The pre-conditions or error-cases if there are any, are clearly separated from the happy-flow. There is also the another reason to report errors as soon as they can be detected: letting a program continue in an erroneous state makes it harder and harder to find the root cause when you have to trace it back.
+
+**DO NOT THROW TO CATCH**: Do not throw exceptions with the intent to catch them yourself. Exceptions are nice on library boundaries, but should avoided to direct the logic flow of your program. If you feel your need to handle an exception in your code that throws it, consider returning a status object and make decisions on that. Exceptions should be err. exceptional ;) if you are expecting them, it is not an unexpected state of the program anymore.
 
 **COMMENTS ARE A CODE SMELL**: I do not mean: "All comments are bad". However, often comments are used to compensate in some way for the fact the author was aware there was something wrong or unclear but was not sure how to solve it. Comments like 'changing this enum breaks the world' are indicators of design problems. [examples](https://cppcoach.godbolt.org/z/Yz13K6TMc). Which by the way, doesn't mean you should remove them without changing the code.
 
@@ -68,10 +71,10 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 
 - Files should not exceed 2000 lines. If exceeded: refactor. 
   - **Rationale**: Large files are an indication of poor decomposition and lack of decomposition makes the code harder to understand.
-- Put every class in its own file.
-  - **Rationale**: helps to keep files smaller.
+- Keep unrelated code in separate files
+  - **Rationale**: helps to keep files smaller and organized, for small project consider a separate file for every class, however for bigger projects, lets say more then 50.000 lines, this can become a compilation bottleneck, so do not be to pedantic about it. It can be perfectly fine to keep related classes in the same file.
 - Use the `#pragma once` include guard in headers.
-  - **Rationale**: This is a bit contentious, because it is non-standard (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weighs the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;)
+  - **Rationale**: This is a bit contentious, because it is non-standard, see [SF.8](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#sf8-use-include-guards-for-all-header-files) (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weighs the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;) If you want to have standard compliance and ultimate portability, consider ignoring this guidelines.
 
 ## Rationales for the high level guidelines:
 
@@ -156,8 +159,8 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
   - **Rationale**: protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
 - Make RAII class undiscardable using `[[nodiscard]]`
   - **Rationale**: this make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
-- Avoid assigning members in the constructor body, use the member initializer list or in-class initialization.
-  - **Rationale**: makes the default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f)
+- Avoid assigning members in the constructor body, use the member initializer list or in-class initialization. 
+  - **Rationale**: not doing this, would make a default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f) [C.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers)
 - mark all constructors with a single argument `explicit` [[C.46]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c46-by-default-declare-single-argument-constructors-explicit) [[C.48]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers) [[C.49]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c49-prefer-initialization-to-assignment-in-constructors)
 
 ## Variables
@@ -199,13 +202,13 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 - Ensure exceptions thrown are handled on a higher level
   - **Rationale**: Unhandled (uncaught) exceptions cause undefined behavior in C++, typically this will crash the program.
 - Prefer standard exception types over custom exceptions
-  - Convert 3rd party exceptions that do not inherit from std::exception to exception that do.
-  - **Rationale**: There is no way for (higher level) functions to know what 3rd party exceptions to catch and if they are thrown and unhandled, the program will crash.
+  - Convert 3rd party exceptions that do not inherit from std::exception to exception that do. I disagree with [E.14](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#e14-use-purpose-designed-user-defined-types-as-exceptions-not-built-in-types) here. Making you own exceptions that do not derive from std::exception is an anti-pattern. 
+  - **Rationale**: There is no way for (higher level) functions to know what 3rd party exceptions to catch and if they are thrown and unhandled, the program will crash. Also catching your custom exceptions encourages using exceptions to handle program logic flow. The motto is: *do not throw to catch* you throw an exception to let a using-component catch it, not your own.
 
 ## Misc
 
 - List class data members in order big to small
-  - **Rationale**: Arranging data members from largest to smallest size can reduce memory padding aka alignment overhead. 
+  - **Rationale**: Arranging data members from largest to smallest size can reduce memory padding aka alignment overhead. Note this is not contradicting [C.47](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c47-define-and-initialize-data-members-in-the-order-of-member-declaration) if you use [C.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers) default member initializers. Also be aware that the order effects the default comparison <=> operator in C++20 and above.
 - Put switch statements in a separate function where each case only returns immediately. [example](https://cppcoach.godbolt.org/z/hca48Gjnq)
   - **Rationale**: Isolating switch statements into separate functions and having each case return immediately simplifies the logic, making the code more readable and maintainable. 
 - Do not use more than `2` nested levels of conditional statements. If exceeded: refactor. [[F.56]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f56-avoid-unnecessary-condition-nesting)
