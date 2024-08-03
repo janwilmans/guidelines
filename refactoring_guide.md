@@ -25,3 +25,4 @@ to be continued...
 
 ## references
 - [Code: Align the happy path to the left edge](https://medium.com/@matryer/line-of-sight-in-code-186dd7cdea88)
+- https://blog.codinghorror.com/flattening-arrow-code/
