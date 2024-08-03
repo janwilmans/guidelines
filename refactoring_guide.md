@@ -19,5 +19,6 @@ To start to understand code one approach to consider is to refacter it!
 - add [[nodiscard]]
 - change deeply nested code to fail early and factor out functions, the happy path is left-aligned
 - move repeated code into function, or keep the result in a wider scope.
+- add documentation to API functions once you understand them, for public API's
 
 to be continued...
