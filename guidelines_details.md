@@ -72,9 +72,9 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 - Files should not exceed 2000 lines. If exceeded: refactor. 
   - **Rationale**: Large files are an indication of poor decomposition and lack of decomposition makes the code harder to understand.
 - Keep unrelated code in separate files
-  - **Rationale**: helps to keep files smaller and organized, for small project consider a separate file for every class, however for bigger projects, lets say more then 50.000 lines, this can become a compilation bottleneck, so do not be to pedantic about it. It can be perfectly fine to keep related classes in the same file.
+  - **Rationale**: helps to keep files smaller and organized, for a small project consider a separate file for every class, however for bigger projects, lets say more then 50.000 lines, this can become a compilation bottleneck, so do not be to pedantic about it. It is fine to keep related classes in the same file.
 - Use the `#pragma once` include guard in headers.
-  - **Rationale**: This is a bit contentious, because it is non-standard, see [SF.8](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#sf8-use-include-guards-for-all-header-files) (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weighs the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;) If you want to have standard compliance and ultimate portability, consider ignoring this guidelines.
+  - **Rationale**: This is contentious, because it is non-standard, see [SF.8](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#sf8-use-include-guards-for-all-header-files) (but widely supported). It does the job of protecting the header from multiple inclusion and avoids the risk of having duplicate include-guard #defines. I think this out-weighs the drawback of the fact that it offers no protection from multiple inclusion if you [sim-link](https://en.wikipedia.org/wiki/Pragma_once) files within a project. (don't do that ;) If you want to have standard compliance and ultimate portability, consider ignoring this guidelines.
 
 ## Rationales for the high level guidelines:
 
@@ -143,26 +143,27 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 
 ## Classes
 
+- Make RAII class undiscardable using `[[nodiscard]]`
+  - **Rationale**: this make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
 - Add `[[nodiscard]]` to `const` member functions in the header, it adds nothing to repeat `[[nodiscard]]` for member functions in the implementation.
   - **Rationale**: both enable the compiler to give you proper error messages, it makes the function hard to use incorrectly.
-- Use `explicit` on all constructors of non-trivial types that take at least one argument.
+- mark all constructors with a single argument `explicit` [[C.46]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c46-by-default-declare-single-argument-constructors-explicit) [[C.48]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers) [[C.49]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c49-prefer-initialization-to-assignment-in-constructors)
   - **Rationale**: to prevent implicit conversions and make the construction visible at the call site.
+  - **note**: it can also be useful to mark templated constructors with multiple argument explicit, _citation needed_.
 - Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables.
   - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1].
 - Use in-class initialization or in initializer lists to initialize all members [[C.41]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c41-a-constructor-should-create-a-fully-initialized-object) [[C.43]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c43-ensure-that-a-copyable-class-has-a-default-constructor) [[C.45]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c45-dont-define-a-default-constructor-that-only-initializes-data-members-use-default-member-initializers-instead)
   - **Rationale**: when full initialization is part of the type, it makes it harder to use incorrectly. 
+- Avoid `protected`, it usually indicates a design problem .
+  - **Rationale**: protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
 - Mark all destructors of classes in an inheritance hierarchy `virtual` or `override`. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
   - **Rationale**: this prevents [subtle destruction bugs](https://cppcoach.godbolt.org/z/ebEPhzfbs).
 - Declare `public`, `protected` and `private` in that order.
   - **Rationale**: consistent style improves readability
-- Avoid `protected`, it usually indicates a design problem .
-  - **Rationale**: protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
-- Make RAII class undiscardable using `[[nodiscard]]`
-  - **Rationale**: this make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
 - Avoid assigning members in the constructor body, use the member initializer list or in-class initialization. 
   - **Rationale**: not doing this, would make a default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f) [C.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers)
-- mark all constructors with a single argument `explicit` [[C.46]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c46-by-default-declare-single-argument-constructors-explicit) [[C.48]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers) [[C.49]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c49-prefer-initialization-to-assignment-in-constructors)
-
+- Every time you use `final` add a comment to explain why you added it and what failure modes removing it would allow
+  
 ## Variables
 
 - Keep scope of variables as small as possible
