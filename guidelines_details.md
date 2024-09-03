@@ -78,17 +78,18 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 
 ## Rationales for the high level guidelines:
 
-- [H.1] Turn on warnings and use sanitizers! [[P.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.
-  - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using [warnings](warnings.md) as errors using (-Werror) further enforces code quality by making sure these issues are addressed. Sanitizers can catch runtime errors such as out-of-bounds access or using values from uninitialized variables. Sanitizers are compiler features that will emit extra checking-code into your program, they can be turned on using `-fsanitize=address,undefined` or -fsanitize=thread`. Note that the thread sanitizer cannot be combined with other sanitizers.
+- [H.1] Turn on warnings and use sanitizers! [[P.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines)
+  - **Rationale**: Enabling compiler warnings helps catch potential issues early in the development process. It ensures that code is more robust and less prone to bugs by highlighting common pitfalls, such as unused variables, type mismatches, or potential logic errors. Using [warnings](warnings.md) as errors (-Werror) further enforces code quality by making sure these issues are addressed. Sanitizers can catch runtime errors such as out-of-bounds access or using values from uninitialized variables. Sanitizers are compiler features that will emit extra checking-code into your program, they can be turned on using `-fsanitize=address,undefined` or `-fsanitize=thread`. Note that the thread sanitizer cannot be combined with other sanitizers.
 - [H.2] Avoid global mutable state [[I.2]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-global) [[I.3]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-singleton)
 - [H.3] Keep the scope of variables and type declarations as limited as possible. [examples](examples.md#keep-scope-as-limited-as-possible)
   - **Rationale**: Limiting the scope of variables enhances code clarity and reduces the likelihood of errors. It makes the code more modular and easier to understand by confining variables to the smallest possible context. This practice also helps prevent unintended interactions between different parts of the code.
 - [H.4] Initialize all variables at declaration. [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/4592cf74-7957-46e8-8133-0d065bab56d8)
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
-- [H.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but no const for member variables and return types [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881) [[example]](https://www.youtube.com/watch?v=KBny6MZJR64)
-  - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded. However, adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that const does not allow.
+- [H.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but do not use const for member variables and return types) [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)) [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881) [[example]](https://www.youtube.com/watch?v=KBny6MZJR64)
+  - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded.
+  - **note**: Adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that `const` does not allow. (much like adding reference members).
 - [H.6] Use `[[nodiscard]]` for all `const` member functions returning a value.
-  - **Rationale**: const function can't modify state, so the only reason to call them is to get the return value
+  - **Rationale**: const function can't modify state, so the only reason to call them is to get the return value.
 - [H.7] Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
   - **Rationale**: breaks local reasoning for the caller, making reading and understanding the code harder.
 - [H.8] Use automatic resource management (RAII). [[P.8]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p8-dont-leak-any-resources) [[C.31]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c31-all-resources-acquired-by-a-class-must-be-released-by-the-classs-destructor)
@@ -96,9 +97,10 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
  - [H.9] Follow the rule of 0 or the rule of 5 in that order.
    - **Rationale**: the [rule of 0 and 5](https://en.cppreference.com/w/cpp/language/rule_of_three) are explained well on [cppreference.com](https://en.cppreference.com/w/cpp/language/rule_of_three)
 - [H.10] No owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [link](https://en.cppreference.com/w/cpp/memory) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed)
-  - **Rationale**: Owning raw pointers are prone to memory leaks and dangling pointers. Using smart pointers (std::unique_ptr, std::shared_ptr) provides automatic memory management, reducing the risk of such errors. Add remark on non-owning raw pointers
+  - **Rationale**: Owning raw pointers are prone to memory leaks and dangling pointers. Use RAII or if you must, smart pointers (std::unique_ptr, std::shared_ptr) provide automatic memory management, reducing the risk of such errors.
+  - **note**: Don't attempt to prohibit all use of raw pointers; it's the **owning** raw pointers that typically cause issues. Additionally, for node-based data raw pointers can be the most efficient way to manage a structure that allows to alter its internal references after construction.
 [H.11] Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
-  - When working with Qt or [Copperspice](www.copperspice.com) the use of the new keyword explicitly allowed.
+  - When working with Qt or [Copperspice](www.copperspice.com) the use of the `new` keyword explicitly allowed.
   - **Rationale**: Manual memory management is error-prone and can lead to memory leaks, double deletions, and other issues. Qt and Copperspice have its own memory management mechanism, so new for those types of classes is actually not indicative of manual memory management.
 - [H.12] Do not use C-style casts.
   - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (`static_cast`, `dynamic_cast`, `const_cast`, `reinterpret_cast`). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
@@ -119,32 +121,32 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 - [H.16] Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
   - **Rationale**: Ensuring destructors are virtual in base classes used polymorphically prevents undefined behavior when derived class objects are deleted through base class pointers. This ensures that the correct destructor is called, which is crucial for proper resource cleanup in derived classes.
 - [H.17] Avoid references as data members of a class
-  - **Rationale**: the reason the same as for 'avoid adding const to member variables', since re-assignment is not possible, the class  becomes **uncopyable** and **unmoveable** 
+  - **Rationale**: The reason the same as for 'avoid adding const to member variables', since re-assignment is not possible, the class  becomes **uncopyable** and **unmoveable** 
 
 ## Functions and lambdas
 
 - add `[[nodiscard]]` and `const` to all getters
-  - **Rationale**: both enable the compiler to give you proper error messages, it makes the function hard to use incorrectly.
+  - **Rationale**: Both enable the compiler to give you proper error messages, it makes the function hard to use incorrectly.
 - Return by value.
   - Wrap C-style functions with output parameters in a function that returns by value.
-  - **Rationale**: helps with local reasoning about object lifetime, reduces lifetime dependencies.
+  - **Rationale**: Helps with local reasoning about object lifetime, reduces lifetime dependencies.
 - Keep functions limited to 42 lines. If a function exceeds this limit, refactor it while balancing the need for concise code and keeping related logic together.
-  - **Rationale**: helps with (local) reasoning about the code, encourages decomposition
+  - **Rationale**: Helps with (local) reasoning about the code, encourages decomposition
 - Functions and lambdas should not have more than `3` arguments. [[I.23]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#i23-keep-the-number-of-function-arguments-low)
-  - **Rationale**: this arbitrary limit encourages the author to consider if the function could/should not be split into multiple functions.
+  - **Rationale**: This arbitrary limit encourages the author to consider if the function could/should not be split into multiple functions.
 - Explicitly capture variables in lambdas.
-  - **Rationale**: explicit capturing expresses intent, avoids capturing 'this' by accident.
+  - **Rationale**: Explicit capturing expresses intent, avoids capturing 'this' by accident.
 - Do not use `inline` for performance reasons.
-  - **Rationale**: compilers are smart enough to inline functions when possible.
+  - **Rationale**: Compilers are smart enough to inline functions when possible.
 - Do not return `nullptr` to indicate an error.
-  - **Rationale**: makes functions/interface harder to use correctly, each caller must check for `nullptr`.
+  - **Rationale**: Makes functions/interface harder to use correctly, each caller must check for `nullptr`.
 - Pass fundamental types (e.g. `double`) and small object arguments by value.
-  - **Rationale**: passing things that fit in registers (64 bit -> 8 bytes) by reference is not a performance win and passing by value improves local reasoning.
+  - **Rationale**: Passing things that fit in registers (64 bit -> 8 bytes) by reference is not a performance win and passing by value improves local reasoning.
 
 ## Classes
 
 - Make RAII class undiscardable using `[[nodiscard]]`
-  - **Rationale**: this make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
+  - **Rationale**: This make them [harder to use incorrectly](https://cppcoach.godbolt.org/z/1d5Pq9nYn).
 - Add `[[nodiscard]]` to `const` member functions in the header, it adds nothing to repeat `[[nodiscard]]` for member functions in the implementation.
   - **Rationale**: both enable the compiler to give you proper error messages, it makes the function hard to use incorrectly.
 - mark all constructors with a single argument `explicit` [[C.46]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c46-by-default-declare-single-argument-constructors-explicit) [[C.48]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers) [[C.49]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c49-prefer-initialization-to-assignment-in-constructors)
@@ -153,46 +155,47 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 - Define interfaces as pure virtual classes that have a default virtual destructor and do not have member variables.
   - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1].
 - Use in-class initialization or in initializer lists to initialize all members [[C.41]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c41-a-constructor-should-create-a-fully-initialized-object) [[C.43]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c43-ensure-that-a-copyable-class-has-a-default-constructor) [[C.45]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c45-dont-define-a-default-constructor-that-only-initializes-data-members-use-default-member-initializers-instead)
-  - **Rationale**: when full initialization is part of the type, it makes it harder to use incorrectly. 
+  - **Rationale**: When full initialization is part of the type, it makes it harder to use incorrectly. 
 - Avoid `protected`, it usually indicates a design problem .
-  - **Rationale**: protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
+  - **Rationale**: Protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
 - Mark all destructors of classes in an inheritance hierarchy `virtual` or `override`. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
-  - **Rationale**: this prevents [subtle destruction bugs](https://cppcoach.godbolt.org/z/ebEPhzfbs).
+  - **Rationale**: This prevents [subtle destruction bugs](https://cppcoach.godbolt.org/z/ebEPhzfbs).
 - Declare `public`, `protected` and `private` in that order.
-  - **Rationale**: consistent style improves readability
+  - **Rationale**: Consistent style improves readability
 - Avoid assigning members in the constructor body, use the member initializer list or in-class initialization. 
-  - **Rationale**: not doing this, would make a default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f) [C.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers)
-- Every time you use `final` add a comment to explain why you added it and what failure modes removing it would allow
+  - **Rationale**: Not doing this, would make a default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f) [C.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers)
+- Whenever you use final, include a comment explaining the reasoning behind it and what issues could arise if it were removed.
+  - **Rational**: Reduces the chance that someone will remove it without understanding the consequences.
   
 ## Variables
 
 - Keep scope of variables as small as possible
-  - **Rationale**: a smaller scope makes local reasoning easier and reduces opportunities to make mistakes
+  - **Rationale**: A smaller scope makes local reasoning easier and reduces opportunities to make mistakes
 - Initialize variables at declaration
-  **Rationale**:  Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.- Declare variables on individual lines (i.e. no `int a, b, c;`)
-  - **Rationale**: this improved readability and goes hand-in-hand with: initialize all variables at declaration.
+  - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.- Declare variables on individual lines (i.e. no `int a, b, c;`)
+  - **Rationale**: This improved readability and goes hand-in-hand with: initialize all variables at declaration
 - Use `const` whenever possible
   - **Rationale**: Using const indicates that a variable's value will not change after initialization, which helps prevent accidental modifications. It makes the code safer and more predictable.
 - Do not use const for member variables
   - **Rationale**: Const member variables make the type unmovable and unassignable, which can complicate the usage of objects, especially when using standard library containers or algorithms that rely on move semantics.
 - Do not use references as member variables
   - **Rationale**: Reference members also make the type unmovable and unassignable, limiting the flexibility and usability of the class.
-- Avoid globals. If really needed: use a static access method to encapsulate the global state
-  - **Rationale**: Global variables make debugging difficult due to their wide scope.
+- Avoid globals. If really needed: use a static access method (a Meyers singleton) to encapsulate the global state
+  - **Rationale**: Global variables make understanding the code and debugging difficult due to their wide scope.
   - **Note** avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order
-- Prefer `auto` in places where it makes code more readable
-  - **Rationale**: do not repeat yourself, auto variables cannot be left uninitialized. That being said, don't overuse it.
-- Use `auto *` when receiving a pointer.
-  - **Rationale**: plain 'auto' would hide the fact that you are receiving a pointer.
+- Prefer `auto` in places where it makes code **more** readable
+  - **Rationale**: Avoids repeating the variable type on the left-hand side, and ensures the auto-variables are always initialized. It also simplifies refactoring by encouraging programming against type interfaces rather than concrete types
+- Use `auto *` when receiving a pointer
+  - **Rationale**: Using plain 'auto' would obscure the fact that you're dealing with a pointer
 - Prefer `static_cast` or `dynamic_cast` over C-style casts.
   - Explicitly constructing native types to do narrowing conversion is allowed (i.e. `void example(double v) { int a(v);`)
   - **Rationale**: C++ style casting make the type conversion explicit, which helps understanding the programmer's intent
 - Do not use raw pointers for ownership.
-  - **Rationale**: Use RAII objects or smart pointers instead. `std::unique_ptr` has minimal performance overhead and ensures that an object has a single owner.
+  - **Rationale**: Use RAII objects or smart pointers instead. `std::unique_ptr` has minimal performance overhead and ensures that an object has a single owner
 - Use `static constexpr` for scoped variables inside implementation files, functions or classes.
-  - **Rationale**: Static constexpr ensures that the variable is constant and has internal linkage, meaning it is limited to the scope in which it is declared.
+  - **Rationale**: Static constexpr ensures that the variable is constant and has internal linkage, meaning it is limited to the scope in which it is declared
 - Use `inline constexpr` for globally scoped constants.
-  - **Rationale**: Allows the definition of a constant in a header file without violating the one definition rule (ODR), ensuring that the constant has internal linkage but can still be included in multiple translation units.
+  - **Rationale**: Allows the definition of a constant in a header file without violating the one definition rule (ODR), ensuring that the constant has internal linkage but can still be included in multiple translation units
 - Prefer enum classes over booleans
   - **Rationale**: It states the intent clearly at the call site. (https://cppcoach.godbolt.org/z/7eP7vE9G5)
 - Group related variables that are always passed together into structs. (https://cppcoach.godbolt.org/z/vxnxK1sv7)
