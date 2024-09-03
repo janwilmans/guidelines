@@ -95,7 +95,7 @@ That's all folks! As you can see, C++ is easy ;) as long as you KISS.
 
 ## Oh wait, there is more!
 
-Well there are [more details](guidelines_details.md) but I think if you follow the above guidelines, you are well on your way to writing decent code!
+Well there are [more details](guidelines_details.md) but I think if you follow the above guidelines, you are well on your way to writing good C++ code!
 As you can see the above guidelines are quite bold, like: "do not use reinterpret_cast". 
 And I can hear you think "but, sometimes...". 
 
