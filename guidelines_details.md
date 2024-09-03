@@ -87,7 +87,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
   - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.
 - [H.5] Use `const` whenever you can [[P.10]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p10-prefer-immutable-data-to-mutable-data) (but do not use const for member variables and return types) [[C.12]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c12-dont-make-data-members-const-or-references-in-a-copyable-or-movable-type)) [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/e1f32720-76e9-41d2-a2cd-c7167a6fe881) [[example]](https://www.youtube.com/watch?v=KBny6MZJR64)
   - **Rationale**: Using const for variables and member functions signifies that their value or behavior will not change, enhancing code safety and readability. `[[nodiscard]]` is used to indicate that the return value of a function should not be ignored, helping to prevent subtle bugs where return values are inadvertently discarded.
-  - **note**: Adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that `const` does not allow. (much like adding reference members).
+  - **note**: Adding const to member variables would make the class **uncopyable** and **unmoveable** because those operations require re-assignment that `const` does not allow.
 - [H.6] Use `[[nodiscard]]` for all `const` member functions returning a value.
   - **Rationale**: const function can't modify state, so the only reason to call them is to get the return value.
 - [H.7] Avoid returning values using arguments. [[F.20]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f20-for-out-output-values-prefer-return-values-to-output-parameters) [[F.21]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f21-to-return-multiple-out-values-prefer-returning-a-struct)
@@ -106,7 +106,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
   - **Rationale**: C-style casts are less explicit and more prone to errors compared to C++-style casts (`static_cast`, `dynamic_cast`, `const_cast`, `reinterpret_cast`). C++-style casts provide better type safety and are easier to search for and review. They make the intention of the cast clearer, which improves code readability and maintainability.
 - [H.13] Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
   - **Rationale**: Interfaces (pure virtual classes) are meant to define a contract without imposing storage requirements. Adding member variables to such classes breaks this abstraction, leading to unnecessary overhead and potential misuse of the interface. Keeping interfaces pure enhances flexibility and decouples implementation details from the interface.
-- [H.14] Do not use protected member variables
+- [H.14] Do not use protected member variables.
   - **Rationale**: Protected member variables violate the encapsulation principle by exposing internal state to derived classes, which can lead to fragile and tightly coupled code. Instead, use protected methods to control access to the internal state, maintaining encapsulation while allowing controlled access when necessary.
 - [H.15] Avoid the use of `volatile`, `const_cast`, `reinterpret_cast`, `typedef`, `register`, `extern`, `protected` or `va_arg`
   - **Rationale**:
@@ -120,8 +120,8 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
     - `va_arg`: Passing to va_args assumes the correct type will be read. This is fragile because it cannot generally be enforced to be safe [[F.55]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f55-dont-use-va_arg-arguments)
 - [H.16] Make all destructors of classes used in runtime polymorphism virtual. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
   - **Rationale**: Ensuring destructors are virtual in base classes used polymorphically prevents undefined behavior when derived class objects are deleted through base class pointers. This ensures that the correct destructor is called, which is crucial for proper resource cleanup in derived classes.
-- [H.17] Avoid references as data members of a class
-  - **Rationale**: The reason the same as for 'avoid adding const to member variables', since re-assignment is not possible, the class  becomes **uncopyable** and **unmoveable** 
+- [H.17] Avoid references as data members of a class.
+  - **Rationale**: The reason the same as for 'avoid adding const to member variables', since re-assignment is not possible, the class becomes **uncopyable** and **unmoveable**.
 
 ## Functions and lambdas
 
@@ -156,12 +156,12 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
   - **Rationale**: Interfaces are a mechanism to separate the interface from the implementation, adding members would contradict this purpose[^1].
 - Use in-class initialization or in initializer lists to initialize all members [[C.41]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c41-a-constructor-should-create-a-fully-initialized-object) [[C.43]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c43-ensure-that-a-copyable-class-has-a-default-constructor) [[C.45]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c45-dont-define-a-default-constructor-that-only-initializes-data-members-use-default-member-initializers-instead)
   - **Rationale**: When full initialization is part of the type, it makes it harder to use incorrectly. 
-- Avoid `protected`, it usually indicates a design problem .
-  - **Rationale**: Protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about
+- Avoid `protected`, it usually indicates a design problem.
+  - **Rationale**: Protected breaks the separation of concerns the base provides and makes the hierarchy harder to reason about.
 - Mark all destructors of classes in an inheritance hierarchy `virtual` or `override`. [[C.35]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c35-a-base-class-destructor-should-be-either-public-and-virtual-or-protected-and-non-virtual)
   - **Rationale**: This prevents [subtle destruction bugs](https://cppcoach.godbolt.org/z/ebEPhzfbs).
 - Declare `public`, `protected` and `private` in that order.
-  - **Rationale**: Consistent style improves readability
+  - **Rationale**: Consistent style improves readability.
 - Avoid assigning members in the constructor body, use the member initializer list or in-class initialization. 
   - **Rationale**: Not doing this, would make a default constructor mandatory and forces [double initialization](https://cppcoach.godbolt.org/z/87eWx351f) [C.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers)
 - Whenever you use final, include a comment explaining the reasoning behind it and what issues could arise if it were removed.
@@ -170,23 +170,23 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 ## Variables
 
 - Keep scope of variables as small as possible
-  - **Rationale**: A smaller scope makes local reasoning easier and reduces opportunities to make mistakes
-- Initialize variables at declaration
-  - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about.- Declare variables on individual lines (i.e. no `int a, b, c;`)
-  - **Rationale**: This improved readability and goes hand-in-hand with: initialize all variables at declaration
-- Use `const` whenever possible
+  - **Rationale**: A smaller scope makes local reasoning easier and reduces opportunities to make mistakes.
+- Initialize variables at declaration.
+  - **Rationale**: Initializing variables at the point of declaration ensures that they have a known state, improving the stability and predictability of the code. It also makes the code easier to understand and reason about. Declare variables on individual lines. (i.e. no `int a, b, c;`).
+  - **Rationale**: This improved readability and goes hand-in-hand with: initialize all variables at declaration.
+- Use `const` whenever possible.
   - **Rationale**: Using const indicates that a variable's value will not change after initialization, which helps prevent accidental modifications. It makes the code safer and more predictable.
-- Do not use const for member variables
+- Do not use const for member variables.
   - **Rationale**: Const member variables make the type unmovable and unassignable, which can complicate the usage of objects, especially when using standard library containers or algorithms that rely on move semantics.
-- Do not use references as member variables
+- Do not use references as member variables.
   - **Rationale**: Reference members also make the type unmovable and unassignable, limiting the flexibility and usability of the class.
-- Avoid globals. If really needed: use a static access method (a Meyers singleton) to encapsulate the global state
+- Avoid globals. If really needed: use a static access method (a Meyers singleton) to encapsulate the global state.
   - **Rationale**: Global variables make understanding the code and debugging difficult due to their wide scope.
   - **Note** avoid the SIOF problem, see https://isocpp.org/wiki/faq/ctors#static-init-order
-- Prefer `auto` in places where it makes code **more** readable
-  - **Rationale**: Avoids repeating the variable type on the left-hand side, and ensures the auto-variables are always initialized. It also simplifies refactoring by encouraging programming against type interfaces rather than concrete types
-- Use `auto *` when receiving a pointer
-  - **Rationale**: Using plain 'auto' would obscure the fact that you're dealing with a pointer
+- Prefer `auto` in places where it makes code **more** readable.
+  - **Rationale**: Avoids repeating the variable type on the left-hand side, and ensures the auto-variables are always initialized. It also simplifies refactoring by encouraging programming against type interfaces rather than concrete types.
+- Use `auto *` when receiving a pointer.
+  - **Rationale**: Using plain 'auto' would obscure the fact that you're dealing with a pointer.
 - Prefer `static_cast` or `dynamic_cast` over C-style casts.
   - Explicitly constructing native types to do narrowing conversion is allowed (i.e. `void example(double v) { int a(v);`)
   - **Rationale**: C++ style casting make the type conversion explicit, which helps understanding the programmer's intent
@@ -196,30 +196,30 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
   - **Rationale**: Static constexpr ensures that the variable is constant and has internal linkage, meaning it is limited to the scope in which it is declared
 - Use `inline constexpr` for globally scoped constants.
   - **Rationale**: Allows the definition of a constant in a header file without violating the one definition rule (ODR), ensuring that the constant has internal linkage but can still be included in multiple translation units
-- Prefer enum classes over booleans
+- Prefer enum classes over booleans.
   - **Rationale**: It states the intent clearly at the call site. (https://cppcoach.godbolt.org/z/7eP7vE9G5)
 - Group related variables that are always passed together into structs. (https://cppcoach.godbolt.org/z/vxnxK1sv7)
-  - **Rationale**: Grouping related variables enhances code organization and readability
+  - **Rationale**: Grouping related variables enhances code organization and readability.
 
 ## Exceptions
 
-- Ensure exceptions thrown are handled on a higher level
+- Ensure exceptions thrown are handled on a higher level.
   - **Rationale**: Unhandled (uncaught) exceptions cause undefined behavior in C++, typically this will crash the program.
-- Prefer standard exception types over custom exceptions
+- Prefer standard exception types over custom exceptions.
   - Convert 3rd party exceptions that do not inherit from std::exception to exception that do. I disagree with [E.14](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#e14-use-purpose-designed-user-defined-types-as-exceptions-not-built-in-types) here. Making you own exceptions that do not derive from std::exception is an anti-pattern. 
   - **Rationale**: There is no way for (higher level) functions to know what 3rd party exceptions to catch and if they are thrown and unhandled, the program will crash. Also catching your custom exceptions encourages using exceptions to handle program logic flow. The motto is: *do not throw to catch* you throw an exception to let a using-component catch it, not your own.
 
 ## Misc
 
-- List class data members in order big to small
+- List class data members in order big to small.
   - **Rationale**: Arranging data members from largest to smallest size can reduce memory padding aka alignment overhead. Note this is not contradicting [C.47](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c47-define-and-initialize-data-members-in-the-order-of-member-declaration) if you use [C.48](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#c48-prefer-default-member-initializers-to-member-initializers-in-constructors-for-constant-initializers) default member initializers. Also be aware that the order effects the default comparison <=> operator in C++20 and above.
 - Put switch statements in a separate function where each case only returns immediately. [example](https://cppcoach.godbolt.org/z/hca48Gjnq)
   - **Rationale**: Isolating switch statements into separate functions and having each case return immediately simplifies the logic, making the code more readable and maintainable. 
 - Do not use more than `2` nested levels of conditional statements. If exceeded: refactor. [[F.56]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f56-avoid-unnecessary-condition-nesting)
   - **Rationale**: By limiting nesting to two levels, the code remains more straightforward and easier to follow. If more nesting is needed, it typically indicates that the function is doing too much and should be refactored into smaller, more manageable pieces.
 - Prefer `nullptr` over `0` or `NULL`.
-  - **Rationale**: `nullptr`` does not implicitly convert to non-pointers
-- Prefer functionality from the STL library over third-party libraries (e.g. Boost)
+  - **Rationale**: `nullptr`` does not implicitly convert to non-pointers.
+- Prefer functionality from the STL library over third-party libraries (e.g. Boost).
   - **Rationale**: Using the STL reduces dependencies on third-party libraries, simplifies builds, reduces potential for compatibility issues, and ensures long-term code stability.
 - Move `static_assert` out of headers, so they are checked only once.
   - **Rationale**: Placing static_assert in implementation files rather than headers ensures that assertions are checked only once, reducing compile times and avoiding redundant checks across multiple translation units. 
@@ -231,15 +231,14 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
   - **Rationale**: it is efficient and non-owning, just a pointer and a size, it avoids unneeded copies and also allows you to pass both `std::string` and `const char*`.
 - Use `const std::string&` for arguments to function that **DO** care about zero-termination.
   - **Rationale**: specifically, functions that wrap C-functions should do this (and **NOT** use std::string_view, because it would require internal code to guarantee the zero-termination).
-- Use `std::string` and pass strings by value on constructor arguments that sink their value (arguments that are moved into a member
-  variable).
+- Use `std::string` and pass strings by value on constructor arguments that sink their value (arguments that are moved into a member variable).
   - **Rationale**: this allows the caller to choose to move into the argument or make only one copy.
 - Use `const std::filesystem::path& path` for strings that refer to file-like objects, such as devices or files.
   - **Rationale**: filesystem::path expresses intent, its `.c_str()` guarantees zero-termination and `path` comes with handy functions.
-- do not use exceptions for code-flow decisions aka. do not throw if you expect you will need to catch the exception as part of the
+- Do not use exceptions for code-flow decisions aka. do not throw if you expect you will need to catch the exception as part of the
   business logic of your application. Exceptions are for 'exceptional' cases, so only when continuing normal execution isn't possible.
-  - **Rationale**: using exceptions for business logic breaks the concept of local reasoning, you 'expect' certain callees to throw under certain conditions. Also stack-unwinding it not free in terms of performance; using exceptions for code-flow decisions leads to less readable, harder to maintain, and potentially less performant code
-- Avoid `requires requires`
+  - **Rationale**: using exceptions for business logic breaks the concept of local reasoning, you 'expect' certain callees to throw under certain conditions. Also stack-unwinding it not free in terms of performance; using exceptions for code-flow decisions leads to less readable, harder to maintain, and potentially less performant code.
+- Avoid `requires requires`.
   - **Rationale**: it is a shorthand for an in-place unnamed concept, give it a name.
 
 
