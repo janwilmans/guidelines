@@ -15,11 +15,11 @@ It is likely that the sources of what I describe here are found in any and all c
 These guidelines are free to use by anyone, if you find them useful, I would appreciate your support through a [Ko-fi](https://ko-fi.com/janwilmans).
 
 Most of the guidelines I describe here are generally considered 'Modern C++ guidelines' as of 2023. However, many of them are applicable regardless of whether you use C++11, C++23 or anything in between.
-The guidelines are also mostly in line with Jason Turners's teachings on [C++ Weekly](https://www.youtube.com/@cppweekly). 
+The guidelines are also mostly in line with Jason Turners's teachings on [C++ Weekly](https://www.youtube.com/@cppweekly). Also I added references to corresponding C++ Core Guidelines where applicable.
 
 # Brief
 
-My approach typically deviates from other sources through simplification. I try to offer guidance even when the answer is "it depends." My reasoning is that, while it does depend, having a go-to default is valuable. The more we choose these defaults, the less surprising the code becomes.
+In some places you may find my guidelines contradict common advice, this is unavoidable and also intential. My approach typically deviates from other sources through simplification. I try to offer guidance even when the answer is "it depends." My reasoning is that, while it does depend, having a go-to default is valuable. The more we choose these defaults, the less surprising the code becomes.
 
 I also strive to keep it brief. Nobody wants to read a 200-page document before they start coding, and it's difficult to keep all of that in mind all the time. This is why I provide the [Highest Level Summary](#highest-level-summary) below and why there is some redundancy between [this](README.md) document and the [detailed document](guidelines_details.md).
 
@@ -35,8 +35,7 @@ I should also mention you should not follow guidelines mindlessly. Instead, thin
 
 I find that the guidelines outlined here are reasonable default practices for many projects. The motto I recommend is: **comply or explain**. While it might sound harsh, it is just an easy to remember motto, do not take it as an order, just as a way to remember. It means if you choose a non-default solution and deviated from a guideline, you should be able to articulate why. Such instances may indicate particularly interesting code, that you could move into a separate function. Or could benefit from a comment explaining a 'why'.
 
-To re-affirm, do not to use these guidelines as a strict "do this or else" directive but rather the other way around, the guidelines should never be followed blindly! If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you 
-demonstrate you thought about it and came to the conclusion that something else was better. And THAT IS GREAT.
+To re-affirm, do not to use these guidelines as a strict "do this or else" directive but rather the other way around, the guidelines should never be followed blindly! If you are comfortable explaining why you wrote something in a way that deviated from the guidelines, then you demonstrate you thought about it and came to the conclusion that something else was better. And THAT IS GREAT.
 
 # Guidelines vs. Style 
 
