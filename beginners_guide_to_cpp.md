@@ -47,6 +47,7 @@ Now you have the first step out of the way, you can experiment by modifying the 
 
 # resources to learn more:
 
+- 
 - https://cppreference.com/     ('the manual', for looking up all standard library features, reading it takes some getting used to)
 - https://roadmap.sh/cpp        (suggestions for a growth path, check it out, it has many nice explanations and guides)
 - https://nullptr.nl/blog       (my own blog, mainly random posts not specifically targeted at beginners)
@@ -58,4 +59,20 @@ Now you have the first step out of the way, you can experiment by modifying the 
 - https://www.youtube.com/@CppCon      (talks from many speakers from the last decade)
 - https://www.youtube.com/@CopperSpice (more advanced topics explained in detail)
 - https://www.youtube.com/@BoostCon
+
+## books
+
+- A Tour of C++,  Bjarne Stroustrup - great introduction and overview of the language without going into too much details, ~200 pages.
+- C++ Software Design, Design Principles and Patterns for High-Quality Software by Klaus Iglberger - Highly recommended, explains the classic design patterns are their specific application in C++ with many examples.
+- The C++ Programming Language, Bjarne Stroustrup - the best reference, I would not recommend reading it cover to cover, but a great reference for looking up details.
+
+# books I have not read, but I hear are really good
+
+- Beautiful C++: 30 Core Guidelines for Writing Clean, Safe, and Fast Code, by Kate Gregory and Guy Davidson
+
+# more in-depth books
+
+- C++ Concurrency In Action, Anthony Williams - special focus on concurrent programming and threads. 
+- Effective Modern C++, Scott Meyers - foundational book structure around good practices, its a little dated, doesn't go beyond C++14, ~300 pages.
+- The Design and Evolution of C++, Bjarne Stroustrup  - great book if you are interested in why C++ become the way it is. 
 
