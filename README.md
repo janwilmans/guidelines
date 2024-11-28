@@ -1,6 +1,6 @@
 # C++ Default Guidelines
 
-This is a C++ guidelines and good practices document by Jan Wilmans (c) 2023
+This is a C++ guidelines and good practices document by Jan Wilmans (c) 2024
 
 The main purpose for this set of guidelines is to serve as a starting point for people that are new to the language or learners seeking to improve their C++ writing quality.
 
