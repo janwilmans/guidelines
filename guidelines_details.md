@@ -57,7 +57,7 @@ I think the comments on 'isInternetAvailable()' are good, the name of function e
 bool isInternetAvailable();
 ```
 
-**THE MOST FITTING TOOL**: With the most fitting tool I mean, if you have a choice between more generic solutions and more specific solutions the more specific solution is almost always less error-prone. An example of this is `std::lock_guard`, it cannot unlock early and it takes only one lockable object. While `std::scoped_lock` can lock multiple object at once and `std::unique_lock` can unlock early. If you do not require the latter features, prefer `std::lock_guard`, as it does not have extra features and thus is harder to use incorrectly.
+**THE MOST FITTING TOOL**: With the most fitting tool, I mean that when choosing between a more general-purpose solution and a more specialized one, the specialized option is typically less prone to errors.  For instance, consider `std::lock_guard`, which is designed to manage a single lockable object and does not allow early unlocking. In contrast, `std::scoped_lock` can manage multiple lockable objects simultaneously, and `std::unique_lock` allows early unlocking. If you don't need these additional features, it's better to use `std::lock_guard`, as its simplicity reduces the likelihood of incorrect usage.
 
 Another example; `std::shared_ptr<T>` is very generic, objects of this type can be copied and weak pointers can be created from it. In contrast `std::unique_ptr<T>` has a more specific use case, a limited set of features and is therefore less error-prone.
 
