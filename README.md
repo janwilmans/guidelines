@@ -82,7 +82,7 @@ Generally, use the most fitting tool for the job, if it has less features, it al
 - [H.9] Follow the [rule of 0](https://en.cppreference.com/w/cpp/language/rule_of_three) or the rule of 5 in that order.
 - [H.10] Avoid owning raw pointers. [[I.11]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#Ri-raw) [[F.26]](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#f26-use-a-unique_ptrt-to-transfer-ownership-where-a-pointer-is-needed) [[doc]](https://en.cppreference.com/w/cpp/memory)
 - [H.11] Avoid manual memory management using `new`, `delete`, `malloc`, `free`, etc.
-    - When working with Qt the use of the new keyword explicitly allowed.
+    - When working with Qt the use of the new keyword is explicitly allowed.
 - [H.12] Do not use [C-style casts](https://en.cppreference.com/w/cpp/language/explicit_cast). [[meme]](https://github.com/janwilmans/guidelines/assets/5933444/27784daa-1ed8-4d75-9482-0e3e2be1aae7)
 - [H.13] Do not add member variables to classes used as interfaces. (Interfaces are defined as pure virtual classes that have a virtual = default destructor)
 - [H.14] Do not use protected member variables.
