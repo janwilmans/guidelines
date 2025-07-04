@@ -197,7 +197,7 @@ Another example; `std::shared_ptr<T>` is very generic, objects of this type can 
 - Use `inline constexpr` for globally scoped constants.
   - **Rationale**: Allows the definition of a constant in a header file without violating the one definition rule (ODR), ensuring that the constant has internal linkage but can still be included in multiple translation units
 - Prefer enum classes over booleans.
-  - **Rationale**: It states the intent clearly at the call site. (https://cppcoach.godbolt.org/z/7eP7vE9G5)
+  - **Rationale**: It states the intent clearly at the call site and avoids negative logic. (https://cppcoach.godbolt.org/z/v36rnW7Gn)
 - Group related variables that are always passed together into structs. (https://cppcoach.godbolt.org/z/vxnxK1sv7)
   - **Rationale**: Grouping related variables enhances code organization and readability.
 
