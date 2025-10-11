@@ -1,0 +1,7 @@
+https://github.com/janwilmans/guidelines
+https://github.com/janwilmans/OpenCanary
+
+https://editorconfig.org/
+https://clang.llvm.org/docs/ClangFormat.html
+https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines
+

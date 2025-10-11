@@ -104,7 +104,7 @@ And I can hear you think "but, sometimes...".
 EXACTLY: **sometimes** you need it.
 
 And that is why (I repeat) these are Default Guidelines, not rigid rules.
-If you can justify (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate. However, make it explicit. You may consider wrapping that `reinterpret_cast` you need into a function and let the function name explain the purpose or the reason **why** it is needed.
+If you can justify (to yourself): yes, I see the guidelines, but this case is special, then by all means, deviate. However, make it explicit. You may consider wrapping that `reinterpret_cast` you need into a function and let the function name explain the purpose and add the explain the reason **why** it is needed in a comment.
 
 ## Feedback very welcome!
 
